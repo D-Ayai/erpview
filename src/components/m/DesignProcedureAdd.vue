@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h4
+    <h4>生产管理>产品生产工序设计>制定产品生产工序设计单</h4>
     <el-form :inline="true" :model="formInline" class="demo-form-inline" size="mini">
       <el-form-item label="菜单">
-        <el-cascader  :options="formInline.options"  :props="{ checkStrictly: true }" clearable></el-cascader>
+        <el-cascader  :options="formInline.options"  :props="{checkStrictly: true }" clearable></el-cascader>
       </el-form-item>
       <el-form-item label="时间">
         <el-date-picker
@@ -87,7 +87,14 @@
         onSubmit() {
           console.log('submit!');
         },
-
+        getDate(){
+          this.$axios.get("Config/queryAll").then((response)=>{
+            this.formInline.options=response.data;
+          }).catch();
+        }
+      },
+      created(){
+        this.getDate();
       },
     }
 </script>
