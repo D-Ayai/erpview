@@ -236,11 +236,11 @@
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-col :span="11">
+         <!-- <el-col :span="11">
             <el-form-item label="是否复核" >
               <el-input clearable v-model="editform.checkTag"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="12">
             <el-form-item label="建档时间">
               <el-input clearable v-model="editform.registerTime"></el-input>
@@ -250,7 +250,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editwinshow = false">取 消</el-button>
+        <el-button @click="editwinshow = false">返回</el-button>
         <el-button type="primary" @click="btnsave">确 定</el-button>
       </div>
 
@@ -272,11 +272,7 @@
           delid: -1,
           editwinshow: false,
           editform: {
-            checkTag:"1",
-            changeTime:"null",
-            checkTime:"null",
-            fileChangeAmount:"null",
-            realCostPrice:"null"
+            checkTag:""
           },
           addwinshow:false,
           addform:{},
@@ -362,6 +358,7 @@
         btnsave(){   //编辑模态框  保存按钮按下
           this.editwinshow = false;
           var _this =this;
+          _this.editform.checkTag="1";
           //将数据保存到db
           //this.editform
           var params = new URLSearchParams();
@@ -371,7 +368,10 @@
           // Object.keys(this.editform)   获取当前json对象的key的数组
           //{id:1,name:"张三"}    ["id","name"]
           Object.keys(this.editform).forEach(function (item) {
-            params.append(item,_this.editform[item]);
+            if(_this.editform[item]!=null){
+              params.append(item,_this.editform[item]);
+            }
+
           })
 
 
@@ -380,13 +380,13 @@
             if (response.data == true) {
               _this.$notify({
                 title: '成功',
-                message: '编辑成功',
+                message: '复核成功',
                 type: 'success'
               });
             } else {
               _this.$notify({
                 title: '失败',
-                message: '编辑失败',
+                message: '复核失败',
                 type: 'danger'
               });
             }

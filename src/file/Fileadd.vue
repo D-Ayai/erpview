@@ -25,15 +25,8 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-          <el-form-item>
-            <el-col :span="12">
-          <el-form-item label="I级分类" prop="firstKindName">
-          <el-select v-model="fileForm.firstKindName" placeholder="I级分类">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-            </el-col>
+          <!--<el-form-item>
+
             <el-col :span="12">
         <el-form-item label="II级分类" prop="secondKindName">
           <el-select v-model="fileForm.secondKindName" placeholder="II级分类">
@@ -42,15 +35,24 @@
           </el-select>
         </el-form-item>
             </el-col>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item>
-            <el-col :span="12">
+           <!-- <el-col :span="12">
         <el-form-item label="III级分类" prop="thirdKindName">
           <el-select v-model="fileForm.thirdKindName" placeholder="III级分类">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
+            </el-col>-->
+            <el-col :span="12">
+              <el-form-item label="级分类" prop="firstKindName">
+                <el-cascader
+                  v-model="value"
+                  :options="ops"
+                  @change="handleChange">
+                </el-cascader>
+              </el-form-item>
             </el-col>
             <el-col :span="12">
             <el-form-item style="width: 400px" prop="productNick" label="产品简介">
@@ -178,6 +180,8 @@
      name: "Fileadd",
       data() {
         return {
+          value: [],
+          ops:[],
           fileForm: {
             productId:"",
             productName:"",
@@ -217,13 +221,24 @@
             factoryName: [
               { required: true, message: '请输入制造商', trigger: 'blur' }
             ],
-            firstKindName: [
+          /*  firstKindName: [
               { required: true, message: '请选择一级分类', trigger: 'change' }
-            ]
+            ]*/
           }
         };
       },
       methods: {
+        handleChange(value) {
+          this.fileForm.firstKindName= this.value[0];
+          this.fileForm.secondKindName = this.value[1];
+          this.fileForm.thirdKindName = this.value[2];
+          console.log(this.fileForm.firstKindName+this.fileForm.secondKindName+this.fileForm.thirdKindName);
+        },
+        getDate(){
+          this.$axios.get("Config/queryAll").then((response)=>{
+            this.ops=response.data;
+          }).catch();
+        },
         btnadd(){
           //添加按钮按下，保存到db
           var _this =this;
@@ -297,9 +312,13 @@
           var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
           this.fileForm.registerTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
           this.fileForm.productId=year+month+ day+ hour+ minute+ second;
+
         }
       },
-      created(){this.getNowTime ()}
+      created(){
+       this.getNowTime ();
+        this.getDate();
+     }
     }
 </script>
 

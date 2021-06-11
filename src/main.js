@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import App2 from './App2.vue'
 import fileadd from './file/Fileadd.vue'
+import leve from './components/LevelClass.vue'
+import filepage from './file/Filepage.vue'
 //导入elementui
 import  'element-ui/lib/theme-chalk/index.css'
 import  ElementUI from 'element-ui'
@@ -18,5 +20,5 @@ Vue.prototype.$axios = Axios;
 
 new Vue({
   el: '#app',
-  render: h => h(fileadd)
+  render: h => h(filepage)
 })
