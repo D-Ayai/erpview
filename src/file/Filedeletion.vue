@@ -1,4 +1,3 @@
-
 <template>
   <div id="app">
 
@@ -50,14 +49,14 @@
         prop="responsiblePerson"
         label="产品经理">
       </el-table-column>
-      <el-table-column label="档案变更">
+      <el-table-column label="删除">
         <template slot-scope="scope">
-          <el-button type="warning" @click="openeditwin(scope.row.id)">档案变更</el-button>
+          <el-button type="warning" @click="openeditwin(scope.row.id)">删除</el-button>
           <!-- <el-popconfirm
              title="确定删除吗？"
              @confirm="delcartype"
            >
-             <el-button type="danger" slot="reference" @click="delid=scope.row.id">删除</el-button>
+             <el-button type="warning" @click="openeditwin(scope.row.id)">复核</el-button>
            </el-popconfirm>-->
         </template>
       </el-table-column>
@@ -74,7 +73,7 @@
       :total="total">
     </el-pagination>
 
-    <!-- 添加态框-->
+   <!--  添加态框
     <el-dialog title="类型添加" :visible="addwinshow">
 
       <el-form label-width="80px" :modal="addform">
@@ -96,14 +95,14 @@
         <el-button type="primary" @click="btnadd">确 定</el-button>
       </div>
 
-    </el-dialog>
+    </el-dialog>-->
 
     <!-- 编辑模态框-->
     <el-dialog title="类型编辑" :visible="editwinshow">
+      <h2>是否要删除</h2>
+      <!--<el-form label-width="80px" :modal="editform" style=" visibility: hidden">
 
-      <el-form label-width="80px" :modal="editform">
-
-        <el-form-item>
+      &lt;!&ndash;  <el-form-item>
           <el-col :span="11">
             <el-form-item label="id" >
               <el-input clearable v-model="editform.id" disabled></el-input>
@@ -111,67 +110,67 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="产品名称">
-              <el-input clearable v-model="editform.productName"></el-input>
+              <el-input clearable v-model="editform.productName"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="制造商" >
-              <el-input clearable v-model="editform.factoryName"></el-input>
+              <el-input clearable v-model="editform.factoryName"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="I级分类" >
-              <el-input clearable v-model="editform.firstKindName"></el-input>
+              <el-input clearable v-model="editform.firstKindName"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="II级分类">
-              <el-input clearable v-model="editform.secondKindName"></el-input>
+              <el-input clearable v-model="editform.secondKindName"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="III级分类" >
-              <el-input clearable v-model="editform.thirdKindName"></el-input>
+              <el-input clearable v-model="editform.thirdKindName"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="产品简介">
-              <el-input clearable v-model="editform.productNick"></el-input>
+              <el-input clearable v-model="editform.productNick"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="用途类型" >
-              <el-input clearable v-model="editform.type"></el-input>
+              <el-input clearable v-model="editform.type"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="档次级别">
-              <el-input clearable v-model="editform.productClass"></el-input>
+              <el-input clearable v-model="editform.productClass"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="计量单位" >
-              <el-input clearable v-model="editform.personalUnit"></el-input>
+              <el-input clearable v-model="editform.personalUnit"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="计量值">
-              <el-input clearable v-model="editform.personalValue"></el-input>
+              <el-input clearable v-model="editform.personalValue"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="市场单价" >
-              <el-input clearable v-model="editform.listPrice"></el-input>
+              <el-input clearable v-model="editform.listPrice"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -179,65 +178,65 @@
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="计划成本单价">
-              <el-input clearable v-model="editform.costPrice"></el-input>
+              <el-input clearable v-model="editform.costPrice"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="保修期" >
-              <el-input clearable v-model="editform.warranty"></el-input>
+              <el-input clearable v-model="editform.warranty"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="替代品名称">
-              <el-input clearable v-model="editform.twinName"></el-input>
+              <el-input clearable v-model="editform.twinName"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="替代品编号" >
-              <el-input clearable v-model="editform.twinId"></el-input>
+              <el-input clearable v-model="editform.twinId"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="生命周期(年)">
-              <el-input clearable v-model="editform.lifecycle"></el-input>
+              <el-input clearable v-model="editform.lifecycle"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="单位" >
-              <el-input clearable v-model="editform.amountUnit"></el-input>
+              <el-input clearable v-model="editform.amountUnit"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="产品经理">
-              <el-input clearable v-model="editform.responsiblePerson"></el-input>
+              <el-input clearable v-model="editform.responsiblePerson"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商集合" >
-              <el-input clearable v-model="editform.providerGroup"></el-input>
+              <el-input clearable v-model="editform.providerGroup"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="产品描述">
-              <el-input clearable v-model="editform.productDescribe"></el-input>
+              <el-input clearable v-model="editform.productDescribe"disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="登记人" >
-              <el-input clearable v-model="editform.register"></el-input>
+              <el-input clearable v-model="editform.register"disabled></el-input>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item>
-          <!--<el-col :span="11">
+          &lt;!&ndash;<el-col :span="11">
             <el-form-item label="级分类" prop="firstKindName">
           <el-cascader
             v-model="value"
@@ -246,22 +245,22 @@
           </el-cascader>
             </el-form-item>
           </el-col>
-          --><!-- <el-col :span="11">
+          &ndash;&gt;&lt;!&ndash; <el-col :span="11">
              <el-form-item prop="checkTime" label="复核时间" >
                <el-input clearable v-model="editform.checkTime"></el-input>
              </el-form-item>
-           </el-col>-->
+           </el-col>&ndash;&gt;
           <el-col :span="12">
             <el-form-item label="建档时间">
               <el-input clearable v-model="editform.registerTime"disabled></el-input>
             </el-form-item>
           </el-col>
-        </el-form-item>
-      </el-form>
+        </el-form-item>&ndash;&gt;
+      </el-form >-->
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">返回</el-button>
-        <el-button type="primary" @click="btnsave">变更</el-button>
+        <el-button type="primary" @click="btnsave">确 定</el-button>
       </div>
 
     </el-dialog>
@@ -271,7 +270,7 @@
 
 <script>
   export default {
-    name: "Filechange",
+    name: "Filedeletion",
     data() {
       return {
         value: [],
@@ -284,14 +283,15 @@
         delid: -1,
         editwinshow: false,
         editform: {
-          checkTag:"",
-          changeTime:""
+          deleteTag:""
         },
         addwinshow:false,
         addform:{},
         checkTag:"1",
-        changeTime:"",
-        deleteTag:"0"
+        deleteTag:"0",
+        checkTime:""
+
+
       }
     },
     methods: {
@@ -301,7 +301,7 @@
         params.append("pageno", this.pageno);
         params.append("pagesize", this.pagesize);
         params.append("checkTag", this.checkTag);
-        params.append("deleteTag",this.deleteTag);
+        params.append("deleteTag",this.deleteTag)
         this.$axios.post("file/page.action", params).then(function (response) {
           _this.tableData = response.data.records;
 
@@ -372,10 +372,9 @@
       },
       btnsave(){   //编辑模态框  保存按钮按下
         this.editwinshow = false;
-        alert(this.changeTime)
         var _this =this;
-        _this.editform.checkTag="0";
-        _this.editform.changeTime=this.changeTime;
+        _this.editform.deleteTag="1";
+        /*_this.editform.checkTime=this.checkTime;*/
         //将数据保存到db
         //this.editform
         var params = new URLSearchParams();
@@ -397,13 +396,13 @@
           if (response.data == true) {
             _this.$notify({
               title: '成功',
-              message: '变更成功',
+              message: '删除成功',
               type: 'success'
             });
           } else {
             _this.$notify({
               title: '失败',
-              message: '变更失败',
+              message: '删除失败',
               type: 'danger'
             });
           }
@@ -478,8 +477,8 @@
         var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
         var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
         var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-        this.changeTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-        this.editform.changeTime=this.changeTime
+        this.checkTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+        this.editform.checkTime=this.checkTime
 
       },
       gette(){

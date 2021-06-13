@@ -249,7 +249,8 @@
           },
           addwinshow:false,
           addform:{},
-          checkTag:"",
+          checkTag:"1",
+          deleteTag:"0"
         }
       },
       methods: {
@@ -259,6 +260,7 @@
           params.append("pageno", this.pageno);
           params.append("pagesize", this.pagesize);
           params.append("checkTag", this.checkTag);
+          params.append("deleteTag",this.deleteTag);
           this.$axios.post("file/page.action", params).then(function (response) {
             _this.tableData = response.data.records;
 

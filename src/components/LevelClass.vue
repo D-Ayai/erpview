@@ -19,7 +19,10 @@
         },
       methods: {
         handleChange(value) {
-          console.log(value);
+          var c = this.value[0];
+          var b = this.value[1];
+          var a = this.value[2];
+          console.log(c+b+a);
         },
         getDate(){
           this.$axios.get("Config/queryAll").then((response)=>{
