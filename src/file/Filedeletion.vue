@@ -1,5 +1,31 @@
 <template>
   <div id="app">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline" size="mini">
+      <el-form-item label="菜单">
+        <el-cascader  v-model="formInline.value2" :options="formInline.options"  :props="{checkStrictly: true }" clearable></el-cascader>
+      </el-form-item>
+      <el-form-item label="时间">
+        <el-date-picker
+          v-model="formInline.value3"
+          type="datetimerange"
+          align="right"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="['00:00:00', '24:00:00']"
+          value-format=" yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="名称">
+        <el-input
+          placeholder="请输入查询编号"
+          v-model="formInline.input"
+          clearable>
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
 
     <!--  &lt;!&ndash;  条件查询&ndash;&gt;
       <el-form :inline="true">
@@ -275,6 +301,12 @@
       return {
         value: [],
         ops:[],
+        formInline:{
+          value2: '',
+          value3: '',
+          options:[],
+          input:"",
+        },
         tableData: [],
         pageno: 1,
         pagesize: 5,
@@ -289,7 +321,13 @@
         addform:{},
         checkTag:"1",
         deleteTag:"0",
-        checkTime:""
+        firstKindName:"",
+        secondKindName:"",
+        thirdKindName:"",
+        checkTime:"",
+        registerTime:"",
+        productName:""
+
 
 
       }
@@ -302,6 +340,12 @@
         params.append("pagesize", this.pagesize);
         params.append("checkTag", this.checkTag);
         params.append("deleteTag",this.deleteTag)
+        params.append("firstKindName",this.firstKindName);
+        params.append("secondKindName",this.secondKindName);
+        params.append("thirdKindName",this.thirdKindName);
+        params.append("checkTime",this.checkTime)
+        params.append("registerTime",this.registerTime)
+        params.append("productName",this.productName)
         this.$axios.post("file/page.action", params).then(function (response) {
           _this.tableData = response.data.records;
 
@@ -469,7 +513,7 @@
         //e.target.files[0];  获取文件控件中保存的第一个文件
         this.addform.img2=e.target.files[0];
       },
-      getNowTime () {
+  /*    getNowTime () {
         var date = new Date();
         var year = date.getFullYear();
         var month = (date.getMonth() + 1) < 10?'0'+(date.getMonth() + 1):(date.getMonth() + 1);
@@ -480,15 +524,34 @@
         this.checkTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
         this.editform.checkTime=this.checkTime
 
-      },
+      },*/
       gette(){
         this.$axios.get("Config/queryAll").then((response)=>{
           this.ops=response.data;
         }).catch();
       },
+      getDa(){
+        this.$axios.get("Config/queryAll").then((response)=>{
+          this.formInline.options=response.data;
+        }).catch();
+      },
+      onSubmit() {
+        this.firstKindName = this.formInline.value2[0];
+        this.secondKindName = this.formInline.value2[1];
+        this.thirdKindName = this.formInline.value2[2];
+        if (this.formInline.value3[1]!= undefined) {
+          this.checkTime = this.formInline.value3[1];
+        }
+        if (this.formInline.value3[0]!= undefined) {
+          this.registerTime = this.formInline.value3[0];
+        }
+        this.productName=this.formInline.input;
+        this.getdata();
+      },
 
     },
     created() {
+      this.getDa();
       this.gette();
       this.getdata();
       this.getNowTime();

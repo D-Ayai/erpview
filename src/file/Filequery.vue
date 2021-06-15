@@ -1,18 +1,31 @@
 <template>
     <div id="app">
-
-      <!--  &lt;!&ndash;  条件查询&ndash;&gt;
-        <el-form :inline="true">
-          <el-form-item label="类型名">
-            <el-input placeholder="请输入类型名字" clearable v-model="productId"></el-input>
-          </el-form-item>
-          <el-button type="success" @click="searchcartype">查询</el-button>
-
-          <el-button type="primary" @click="addwinshow=true">添加</el-button>
-        </el-form>
-    -->
-
-
+      <el-form :inline="true" :model="formInline" class="demo-form-inline" size="mini">
+        <el-form-item label="菜单">
+          <el-cascader  v-model="formInline.value2" :options="formInline.options"  :props="{checkStrictly: true }" clearable></el-cascader>
+        </el-form-item>
+        <el-form-item label="时间">
+          <el-date-picker
+            v-model="formInline.value3"
+            type="datetimerange"
+            align="right"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['00:00:00', '24:00:00']"
+            value-format=" yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="名称">
+          <el-input
+            placeholder="请输入查询编号"
+            v-model="formInline.input"
+            clearable>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
       <!--表格 -->
       <el-table
         :data="tableData"
@@ -237,6 +250,12 @@
       data() {
         return {
           tableData: [],
+          formInline:{
+            value2: '',
+            value3: '',
+            options:[],
+            input:"",
+          },
           pageno: 1,
           pagesize: 5,
           total: 0,
@@ -250,7 +269,14 @@
           addwinshow:false,
           addform:{},
           checkTag:"1",
-          deleteTag:"0"
+          deleteTag:"0",
+          firstKindName:"",
+          secondKindName:"",
+          thirdKindName:"",
+          checkTime:"",
+          registerTime:"",
+          productName:""
+
         }
       },
       methods: {
@@ -261,6 +287,13 @@
           params.append("pagesize", this.pagesize);
           params.append("checkTag", this.checkTag);
           params.append("deleteTag",this.deleteTag);
+
+          params.append("firstKindName",this.firstKindName);
+          params.append("secondKindName",this.secondKindName);
+          params.append("thirdKindName",this.thirdKindName);
+          params.append("checkTime",this.checkTime)
+          params.append("registerTime",this.registerTime)
+          params.append("productName",this.productName)
           this.$axios.post("file/page.action", params).then(function (response) {
             _this.tableData = response.data.records;
 
@@ -440,9 +473,29 @@
           this.editform.checkTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
         }*/
 
+        getDa(){
+          this.$axios.get("Config/queryAll").then((response)=>{
+            this.formInline.options=response.data;
+          }).catch();
+        },
+        onSubmit() {
+          this.firstKindName = this.formInline.value2[0];
+          this.secondKindName = this.formInline.value2[1];
+          this.thirdKindName = this.formInline.value2[2];
+          if (this.formInline.value3[1]!= undefined) {
+            this.checkTime = this.formInline.value3[1];
+          }
+          if (this.formInline.value3[0]!= undefined) {
+            this.registerTime = this.formInline.value3[0];
+          }
+          this.productName=this.formInline.input;
+          this.getdata();
+        },
       },
+
       created() {
         this.getdata();
+        this.getDa();
       }
     }
 </script>
