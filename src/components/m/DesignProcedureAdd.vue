@@ -7,7 +7,7 @@
       </el-form-item>
       <el-form-item label="时间">
         <el-date-picker
-          v-model="formInline.value2"
+          v-model="formInline.value3"
           type="datetimerange"
           align="right"
           start-placeholder="开始日期"
@@ -74,6 +74,7 @@
           return {
             formInline:{
               value2: '',
+              value3: '',
               options:[],
               input:"",
             },
@@ -85,6 +86,8 @@
           rows.splice(index, 1);
         },
         onSubmit() {
+          var a = this.formInline.value3[1];
+          alert(a)
           console.log('submit!');
         },
         getDate(){

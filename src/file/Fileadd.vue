@@ -64,16 +64,17 @@
             <el-col :span="12">
               <el-form-item label="用途类型" prop="type">
                 <el-select v-model="fileForm.type" placeholder="用途类型">
-                  <el-option label="商品" value="商品"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+                  <el-option label="商品" value="1"></el-option>
+                  <el-option label="物料" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
         <el-form-item label="档次级别" prop="productClass">
           <el-select v-model="fileForm.productClass" placeholder="档次级别">
-            <el-option label="抵挡" value="抵挡"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option label="低挡" value="低挡"></el-option>
+            <el-option label="中档" value="中档"></el-option>
+            <el-option label="高档" value="高档"></el-option>
           </el-select>
         </el-form-item>
             </el-col>
