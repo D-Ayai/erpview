@@ -1,5 +1,5 @@
 <template>
-    <div id="file" style="width: 1200px">
+    <div id="file" style="width: 1000px" >
           <h5>您正在做的业务是：产品设计-产品档案管理-产品档案登记</h5>
         <el-form :model="fileForm" :rules="rules" ref="fileForm" label-width="100px" class="demo-fileForm">
         <el-form-item>
@@ -324,5 +324,7 @@
 </script>
 
 <style scoped>
-
+  #file{
+    Float:left
+  }
 </style>

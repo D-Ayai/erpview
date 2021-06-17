@@ -47,12 +47,12 @@
       <el-table-column
         prop="firstKindName"
         label="I级产品分类"
-        width="180">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="secondKindName"
         label="II级产品分类"
-        width="180">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="thirdKindName"
@@ -130,6 +130,163 @@
     <el-dialog title="类型编辑" :visible="editwinshow">
       <el-form label-width="80px" :modal="editform" style=" visibility: hidden">
 
+      <!--  <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="id" >
+              <el-input clearable v-model="editform.id" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="产品名称">
+              <el-input clearable v-model="editform.productName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="制造商" >
+              <el-input clearable v-model="editform.factoryName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="I级分类" >
+              <el-input clearable v-model="editform.firstKindName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="II级分类">
+              <el-input clearable v-model="editform.secondKindName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="III级分类" >
+              <el-input clearable v-model="editform.thirdKindName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="产品简介">
+              <el-input clearable v-model="editform.productNick"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用途类型" >
+              <el-input clearable v-model="editform.type"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="档次级别">
+              <el-input clearable v-model="editform.productClass"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="计量单位" >
+              <el-input clearable v-model="editform.personalUnit"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="计量值">
+              <el-input clearable v-model="editform.personalValue"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="市场单价" >
+              <el-input clearable v-model="editform.listPrice"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <h3 style="color: darkgray">辅助信息:</h3>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="计划成本单价">
+              <el-input clearable v-model="editform.costPrice"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="保修期" >
+              <el-input clearable v-model="editform.warranty"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="替代品名称">
+              <el-input clearable v-model="editform.twinName"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="替代品编号" >
+              <el-input clearable v-model="editform.twinId"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="生命周期(年)">
+              <el-input clearable v-model="editform.lifecycle"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="单位" >
+              <el-input clearable v-model="editform.amountUnit"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="产品经理">
+              <el-input clearable v-model="editform.responsiblePerson"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="供应商集合" >
+              <el-input clearable v-model="editform.providerGroup"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-col :span="11">
+            <el-form-item label="产品描述">
+              <el-input clearable v-model="editform.productDescribe"disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="登记人" >
+              <el-input clearable v-model="editform.register"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          &lt;!&ndash;<el-col :span="11">
+            <el-form-item label="级分类" prop="firstKindName">
+          <el-cascader
+            v-model="value"
+            :options="ops"
+            @change="handleChange">
+          </el-cascader>
+            </el-form-item>
+          </el-col>
+          &ndash;&gt;&lt;!&ndash; <el-col :span="11">
+             <el-form-item prop="checkTime" label="复核时间" >
+               <el-input clearable v-model="editform.checkTime"></el-input>
+             </el-form-item>
+           </el-col>&ndash;&gt;
+          <el-col :span="12">
+            <el-form-item label="建档时间">
+              <el-input clearable v-model="editform.registerTime"disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>-->
+      </el-form >
+
+      <el-form label-width="80px" :modal="editform" style=" visibility: hidden">
         <el-form-item>
           <el-col :span="11">
             <el-form-item label="登记人" >
@@ -148,19 +305,20 @@
               <el-input clearable v-model="editform.checker"disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="11">
+          <el-col :span="12">
             <el-form-item label="复核时间" >
               <el-input clearable v-model="editform.checkTime"disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="最大存储量" >
-              <el-input clearable v-model="editform.maxCapacityAmount"disabled></el-input>
-            </el-form-item>
-          </el-col>
         </el-form-item>
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item label="最大存储量" >
+            <el-input clearable v-model="editform.maxCapacityAmount"disabled></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
       </el-form >
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">返回</el-button>
         <!--<el-button type="primary" @click="btnsave">确 定</el-button>-->
@@ -281,12 +439,10 @@
       },
       openeditwin(id) {  //打开编辑页面
         this.editwinshow = true;
-
         //根据id查询数据，显示在编辑页面
         var _this = this;
         var params = new URLSearchParams();
         params.append("id", id);
-        alert(id)
         this.$axios.post("cell/byid.action", params).then(function (response) {
           _this.editform=response.data;
         }).catch();
@@ -392,7 +548,7 @@
         this.addform.img2=e.target.files[0];
       },
       getNowTime () {
-        var date = new Date();
+       /* var date = new Date();
         var year = date.getFullYear();
         var month = (date.getMonth() + 1) < 10?'0'+(date.getMonth() + 1):(date.getMonth() + 1);
         var day = date.getDate()<10?'0'+date.getDate():date.getDate();
@@ -401,7 +557,7 @@
         var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
         this.checkTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
         this.editform.checkTime=this.checkTime
-
+*/
       },
       gette(){
         this.$axios.get("Config/queryAll").then((response)=>{
@@ -423,7 +579,7 @@
         if (this.formInline.value3[0]!= undefined) {
           this.registerTime = this.formInline.value3[0];
         }
-        this.productName=this.formInline.input;
+        /*this.productName=this.formInline.input;*/
         this.getdata();
       },
 
@@ -436,7 +592,7 @@
     }
   }
 </script>
-
+<!--
 <style>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -464,4 +620,4 @@
   a {
     color: #42b983;
   }
-</style>
+</style>-->

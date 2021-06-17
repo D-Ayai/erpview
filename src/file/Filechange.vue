@@ -558,7 +558,7 @@
     }
   }
 </script>
-
+<!--
 <style>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -586,5 +586,5 @@
   a {
     color: #42b983;
   }
-</style>
+</style>-->
 

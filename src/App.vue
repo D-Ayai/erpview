@@ -114,6 +114,14 @@
   import PerList from "./components/PerList";
   import Welcome from "./components/Welcome";
   import DesignProcedureAdd from "./components/m/DesignProcedureAdd";
+  import fileadd from "./file/Fileadd.vue";
+  import filepage from "./file/Filepage.vue";
+  import filequery from "./file/Filequery.vue"
+  import filechange from "./file/Filechange.vue"
+  import filedeletion from './file/Filedeletion.vue'
+  import filerecovery from './file/Filerecovery.vue'
+  import filepermanentlydeleted from './file/Filepermanentlydeleted.vue'
+  import Inven from './components/cell/Inventoryquery.vue'
 
   export default {
     name: "App",
@@ -194,7 +202,8 @@
       this.getmenudata();
     },
     components:{
-      UserList,RoleList,MenuList,PerList,DesignProcedureAdd
+      Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,fileadd,filepage,filequery,filechange,filedeletion,
+      filerecovery,filepermanentlydeleted,Inven
     }
   }
 </script>
