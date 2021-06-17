@@ -122,6 +122,7 @@
   import filerecovery from './file/Filerecovery.vue'
   import filepermanentlydeleted from './file/Filepermanentlydeleted.vue'
   import Inven from './components/cell/Inventoryquery.vue'
+  import Outboundapplication from "./components/s/Outboundapplication.vue"
 
   export default {
     name: "App",
@@ -203,7 +204,7 @@
     },
     components:{
       Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,fileadd,filepage,filequery,filechange,filedeletion,
-      filerecovery,filepermanentlydeleted,Inven
+      filerecovery,filepermanentlydeleted,Inven,Outboundapplication
     }
   }
 </script>
