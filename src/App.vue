@@ -4,37 +4,37 @@
 
       <!--头部-->
       <el-header   height="75px">
-          <!--头部导航-->
-          <!--黑色背景设置   background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" -->
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" text-color="#333" active-text-color="#049b78" >
-            <el-menu-item >
-              <template>
-                <span>欢迎使用后端系统</span>
-              </template>
-            </el-menu-item>
-            <!-- 头部的导航菜单-->
-            <el-submenu :index="toumenu.id+''" v-for="toumenu in menutable">
-              <template slot="title">
-                <i :class="toumenu.linkUrl"></i>
-                <span>{{toumenu.name}}</span>
-              </template>
-            </el-submenu>
+        <!--头部导航-->
+        <!--黑色背景设置   background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" -->
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" text-color="#333" active-text-color="#049b78" >
+          <el-menu-item >
+            <template>
+              <span>欢迎使用后端系统</span>
+            </template>
+          </el-menu-item>
+          <!-- 头部的导航菜单-->
+          <el-menu-item :index="toumenu.id+''" v-for="toumenu in menutable">
+            <template slot="title">
+              <i :class="toumenu.linkUrl"></i>
+              <span>{{toumenu.name}}</span>
+            </template>
+          </el-menu-item>
 
-            <el-menu-item style="margin-left: 50%" >
-              <template slot="title">
-                <el-dropdown size="mini" @command="handleCommand"  type="primary">
-                  <el-avatar :size="50"  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="a"><el-link type="primary">{{user.name}}的信息</el-link></el-dropdown-item>
-                    <el-dropdown-item command="e" divided><el-link type="danger">退出登入</el-link></el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-menu-item>
+          <el-menu-item style="margin-left: 50%" >
+            <template slot="title">
+              <el-dropdown size="mini" @command="handleCommand"  type="primary">
+                <el-avatar :size="50"  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="a"><el-link type="primary">{{user.name}}的信息</el-link></el-dropdown-item>
+                  <el-dropdown-item command="e" divided><el-link type="danger">退出登入</el-link></el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-menu-item>
 
 
 
-          </el-menu>
+        </el-menu>
 
       </el-header>
 
@@ -107,7 +107,6 @@
 <script>
 
   //导入组件
-
   import UserList from "./components/UserList";
   import RoleList from "./components/RoleList";
   import MenuList from "./components/MenuList";
@@ -140,11 +139,13 @@
         this.$message('click on item ' + command);
       },
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
+
       },
+
+      //获取目录
       getmenudata(){
         this.$axios.get("Menus/queryallmenus").then((response)=>{
           this.menutable=response.data;
@@ -186,15 +187,15 @@
         }
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-      }
-
+      },
 
     },
     created(){
       this.getmenudata();
     },
+    //这里写导入组件名，记得数据库也要写
     components:{
-      UserList,RoleList,MenuList,PerList,DesignProcedureAdd
+      Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd
     }
   }
 </script>

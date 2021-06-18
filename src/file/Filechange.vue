@@ -27,17 +27,6 @@
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
-    <!--  &lt;!&ndash;  条件查询&ndash;&gt;
-      <el-form :inline="true">
-        <el-form-item label="类型名">
-          <el-input placeholder="请输入类型名字" clearable v-model="productId"></el-input>
-        </el-form-item>
-        <el-button type="success" @click="searchcartype">查询</el-button>
-
-        <el-button type="primary" @click="addwinshow=true">添加</el-button>
-      </el-form>
-  -->
-
 
     <!--表格 -->
     <el-table
