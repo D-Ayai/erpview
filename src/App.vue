@@ -138,7 +138,8 @@
   import DesignProcedureModuleShenHe from "./components/m/DesignProcedureModuleShenHe";
   import DesignProcedureModuleShow from "./components/m/DesignProcedureModuleShow";
   import DesignProcedureModuleUpdate from "./components/m/DesignProcedureModuleUpdate";
-
+  import Outboundregistration from "./components/Delivery/Outboundregistration";
+  import Outboundscheduling from "./components/Delivery/Outboundscheduling.vue";
   export default {
     name: "App",
     data(){
@@ -222,7 +223,9 @@
     components:{
       Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,fileadd,filepage,filequery,filechange,filedeletion,
       filerecovery,filepermanentlydeleted,Inven,Outboundapplication,filelist,FileShenghe,FileQuery,FileUpdate,addModule,
-      queryModule,moduleUpdate,ModuleSh
+      queryModule,moduleUpdate,ModuleSh,DesignProcedureShengHe,DesignProcedureShow,DesignProcedureUpdate,
+      DesignProcedureModuleAdd,DesignProcedureModuleShenHe,DesignProcedureModuleShow,DesignProcedureModuleUpdate,
+      Outboundregistration,Outboundscheduling
     }
   }
 </script>

@@ -187,8 +187,11 @@
             productId:"",
             productName:"",
             factoryName:"",
+            firstKindId:"",
             firstKindName:"",
+            secondKindId:"",
             secondKindName:"",
+            thirdKindId:"",
             thirdKindName:"",
             productNick:"",
             type: "",
@@ -225,16 +228,40 @@
           /*  firstKindName: [
               { required: true, message: '请选择一级分类', trigger: 'change' }
             ]*/
-          }
+          },
+          Config1:{
+            kindName:""
+          },
+          Config2:{ kindName:""},
+          Config3:{ kindName:""},
         };
       },
       methods: {
         handleChange(value) {
-          this.fileForm.firstKindName= this.value[0];
-          this.fileForm.secondKindName = this.value[1];
-          this.fileForm.thirdKindName = this.value[2];
+          this.fileForm.firstKindId= this.value[0];
+          this.fileForm.secondKindId = this.value[1];
+          this.fileForm.thirdKindId = this.value[2];
           console.log(this.fileForm.firstKindName+this.fileForm.secondKindName+this.fileForm.thirdKindName);
-        },
+
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id",this.value[0]);
+          this.$axios.post("Config/byid.action", params).then(function (response) {
+            _this.Config1=response.data;
+          }).catch();
+          var para = new URLSearchParams();
+          para.append("id",this.value[1]);
+          this.$axios.post("Config/byid.action", para).then(function (response) {
+            _this.Config2=response.data;
+          }).catch();
+          var param = new URLSearchParams();
+          param.append("id",this.value[2]);
+          this.$axios.post("Config/byid.action", param).then(function (response) {
+            _this.Config3=response.data;
+          }).catch();
+
+
+          },
         getDate(){
           this.$axios.get("Config/queryAll").then((response)=>{
             this.ops=response.data;
@@ -242,9 +269,13 @@
         },
         btnadd(){
           //添加按钮按下，保存到db
+          this.fileForm.firstKindName=this.Config1.kindName;
+          this.fileForm.secondKindName = this.Config2.kindName;
+          this.fileForm.thirdKindName = this.Config3.kindName;
           var _this =this;
           //组装数据(普通数据+特殊文件)   formData  html5提供的类型
           var params = new FormData();
+
           Object.keys(this.fileForm).forEach((item)=>{
             params.append(item,this.fileForm[item]);
           })
