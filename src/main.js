@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import fileadd from './file/Fileadd.vue'
+/*import fileadd from './file/Fileadd.vue'
 import leve from './components/LevelClass.vue'
 import filepage from './file/Filepage.vue'
 import filequery from './file/Filequery.vue'
@@ -11,7 +11,7 @@ import filerecovery from './file/Filerecovery.vue'
 import filepermanentlydeleted from './file/Filepermanentlydeleted.vue'
 import login from './components/Login.vue'
 import Inven from './components/cell/Inventoryquery.vue'
-//导入elementui
+//导入elementui*/
 import  'element-ui/lib/theme-chalk/index.css'
 import  ElementUI from 'element-ui'
 

@@ -114,16 +114,23 @@
   import PerList from "./components/PerList";
   import Welcome from "./components/Welcome";
   import DesignProcedureAdd from "./components/m/DesignProcedureAdd";
-  import fileadd from "./file/Fileadd.vue";
-  import filepage from "./file/Filepage.vue";
-  import filequery from "./file/Filequery.vue"
-  import filechange from "./file/Filechange.vue"
-  import filedeletion from './file/Filedeletion.vue'
-  import filerecovery from './file/Filerecovery.vue'
-  import filepermanentlydeleted from './file/Filepermanentlydeleted.vue'
+  import fileadd from "./components/file/Fileadd.vue";
+  import filepage from "./components/file/Filepage.vue";
+  import filequery from "./components/file/Filequery.vue"
+  import filechange from "./components/file/Filechange.vue"
+  import filedeletion from './components/file/Filedeletion.vue'
+  import filerecovery from './components/file/Filerecovery.vue'
+  import filepermanentlydeleted from './components/file/Filepermanentlydeleted.vue'
   import Inven from './components/cell/Inventoryquery.vue'
   import Outboundapplication from "./components/s/Outboundapplication.vue"
-
+  import filelist from "./components/Fileform/filelist.vue";
+  import FileShenghe from "./components/Fileform/FileShenghe.vue";
+  import FileQuery from "./components/Fileform/FileQuery.vue";
+  import addModule from "./components/Module/ModuleInsert.vue";
+  import queryModule from "./components/Module/QueryModule.vue";
+  import moduleUpdate from "./components/Module/ModuleUpdate.vue";
+  import ModuleSh from "./components/Module/ModuleShenghe.vue";
+  import FileUpdate from "./components/Fileform/FileUpdate.vue";
   export default {
     name: "App",
     data(){
@@ -204,7 +211,8 @@
     },
     components:{
       Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,fileadd,filepage,filequery,filechange,filedeletion,
-      filerecovery,filepermanentlydeleted,Inven,Outboundapplication
+      filerecovery,filepermanentlydeleted,Inven,Outboundapplication,filelist,FileShenghe,FileQuery,FileUpdate,addModule,
+      queryModule,moduleUpdate,ModuleSh
     }
   }
 </script>
