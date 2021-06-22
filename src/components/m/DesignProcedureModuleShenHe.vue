@@ -80,7 +80,7 @@
         </el-table-column>
         <el-table-column  label="审核">
           <template slot-scope="scope">
-            <el-button type="primary" @click="openeditwin(scope.row.id)">审核</el-button>
+            <el-button type="primary" icon="el-icon-search"  @click="openeditwin(scope.row.id)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>

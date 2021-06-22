@@ -33,7 +33,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" icon="el-icon-search"  @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -317,7 +317,6 @@
             this.$message.error('请添加工序后');
             return false;
           }
-          console.log( this.editform.detailsList[0])
           this.editform.detailsList[0].parentId=this.editform.id;
           this.editform.detailsList[0].register=this.editform.changer;
           this.editwinshow = false;
