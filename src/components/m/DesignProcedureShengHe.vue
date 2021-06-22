@@ -33,7 +33,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column  label="审核">
         <template slot-scope="scope">
-          <el-button type="warning" @click="openeditwin(scope.row.id)">审核</el-button>
+          <el-button type="warning"   @click="openeditwin(scope.row.id)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>

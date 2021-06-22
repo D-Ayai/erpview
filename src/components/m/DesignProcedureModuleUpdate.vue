@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column  label="变更">
         <template slot-scope="scope">
-          <el-button type="warning" @click="openeditwin(scope.row.id)">变更</el-button>
+          <el-button type="warning" icon="el-icon-search"  @click="openeditwin(scope.row.id)">变更</el-button>
         </template>
       </el-table-column>
     </el-table>
