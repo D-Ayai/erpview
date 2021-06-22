@@ -3,8 +3,9 @@ import App from './App.vue'
 //导入elementui
 import  'element-ui/lib/theme-chalk/index.css'
 import  ElementUI from 'element-ui'
-
+import Router from './config/router'
 Vue.use(ElementUI)
+
 
 //导入axios
 import Axios from 'axios'
@@ -16,5 +17,6 @@ Vue.prototype.$axios = Axios;
 
 new Vue({
   el: '#app',
-  render: h => h(App)
+  render: h => h(App),
+  router:Router   //挂载路由
 })

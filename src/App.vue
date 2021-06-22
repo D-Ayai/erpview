@@ -113,6 +113,13 @@
   import PerList from "./components/PerList";
   import Welcome from "./components/Welcome";
   import DesignProcedureAdd from "./components/m/DesignProcedureAdd";
+  import DesignProcedureShengHe from "./components/m/DesignProcedureShengHe";
+  import DesignProcedureShow from "./components/m/DesignProcedureShow";
+  import DesignProcedureUpdate from "./components/m/DesignProcedureUpdate";
+  import DesignProcedureModuleAdd from "./components/m/DesignProcedureModuleAdd";
+  import DesignProcedureModuleShenHe from "./components/m/DesignProcedureModuleShenHe";
+  import DesignProcedureModuleShow from "./components/m/DesignProcedureModuleShow";
+  import DesignProcedureModuleUpdate from "./components/m/DesignProcedureModuleUpdate";
 
   export default {
     name: "App",
@@ -195,7 +202,8 @@
     },
     //这里写导入组件名，记得数据库也要写
     components:{
-      Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd
+      Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,DesignProcedureShengHe,DesignProcedureUpdate
+      ,DesignProcedureShow,DesignProcedureModuleUpdate,DesignProcedureModuleShow,DesignProcedureModuleShenHe,DesignProcedureModuleAdd
     }
   }
 </script>
