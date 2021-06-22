@@ -131,6 +131,14 @@
   import moduleUpdate from "./components/Module/ModuleUpdate.vue";
   import ModuleSh from "./components/Module/ModuleShenghe.vue";
   import FileUpdate from "./components/Fileform/FileUpdate.vue";
+  import DesignProcedureShengHe from "./components/m/DesignProcedureShengHe";
+  import DesignProcedureShow from "./components/m/DesignProcedureShow";
+  import DesignProcedureUpdate from "./components/m/DesignProcedureUpdate";
+  import DesignProcedureModuleAdd from "./components/m/DesignProcedureModuleAdd";
+  import DesignProcedureModuleShenHe from "./components/m/DesignProcedureModuleShenHe";
+  import DesignProcedureModuleShow from "./components/m/DesignProcedureModuleShow";
+  import DesignProcedureModuleUpdate from "./components/m/DesignProcedureModuleUpdate";
+
   export default {
     name: "App",
     data(){
@@ -156,11 +164,13 @@
         this.$message('click on item ' + command);
       },
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
+
       },
+
+      //获取目录
       getmenudata(){
         this.$axios.get("Menus/queryallmenus").then((response)=>{
           this.menutable=response.data;
@@ -202,13 +212,13 @@
         }
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-      }
-
+      },
 
     },
     created(){
       this.getmenudata();
     },
+    //这里写导入组件名，记得数据库也要写
     components:{
       Welcome,UserList,RoleList,MenuList,PerList,DesignProcedureAdd,fileadd,filepage,filequery,filechange,filedeletion,
       filerecovery,filepermanentlydeleted,Inven,Outboundapplication,filelist,FileShenghe,FileQuery,FileUpdate,addModule,
