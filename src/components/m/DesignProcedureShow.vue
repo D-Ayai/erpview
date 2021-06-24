@@ -78,7 +78,7 @@
 
       <el-table-column label="操作" >
         <template slot-scope="scope">
-          <el-button type="info" @click="openeditwin(scope.row.id)" plain>详细</el-button>
+          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row.id)" plain>详细</el-button>
         </template>
       </el-table-column>
 

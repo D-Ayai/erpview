@@ -68,14 +68,13 @@
         label="物料总成本"
         width="140">
       </el-table-column>
-      <el-table-column label="审核状态" width="140">
+      <el-table-column label="未设计状态" width="140">
         <template  slot-scope="scope">
-          <span v-if="scope.row.designModuleTag==1" style="color:green">审核通过</span>
-          <span v-else-if="scope.row.designModuleTag==2" style="color:red">审核不通过</span>
-          <span v-else="" style="color:orange">等待</span>
+          <span v-if="scope.row.designModuleTag==1" style="color:orange">待审核</span>
+          <span v-else-if="scope.row.designModuleTag==2" style="color:green">已审核</span>
+          <span v-else="" style="color:red">未设计</span>
         </template>
       </el-table-column>
-
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="info" @click="openeditwin(scope.row.id)" plain>详细</el-button>
@@ -94,6 +93,83 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+
+    <!-- 查询模态框 -->
+    <el-dialog  title="生产工序设计单" width="60%"  :visible="editwinshow">
+
+      <el-form :inline="true"  :modal="editform">
+        <el-form-item label="产品编号:" style="width:35%" >
+          <span style="color: midnightblue">{{editform.productId}}</span>
+        </el-form-item>
+        <el-form-item label="产品名称:" style="width:35%"  >
+          <span style="color: midnightblue">{{editform.productName}}</span>
+        </el-form-item>
+        <el-form-item label="物料总成本:" style="width:25%">
+          <span style="color: midnightblue">{{editform.moduleCostPriceSum}}</span>
+        </el-form-item>
+        <br>
+        <el-form-item label="设计单编号:" style="width:35%">
+          <span style="color: midnightblue" >{{editform.designId}}</span>
+        </el-form-item>
+        <el-form-item label="设计人:" style="width:35%">
+          <span style="color: midnightblue">{{editform.designer}}</span>
+        </el-form-item>
+        <el-form-item label="工时总成本:" style="width:25%">
+          <span style="color: midnightblue">{{editform.costPriceSum}}</span>
+        </el-form-item>
+
+        <br>
+        <!--表格-->
+        <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
+
+          <el-table-column  prop="detailsNumber" label="工序序号"  width="100"></el-table-column>
+
+          <el-table-column prop="procedureName"  label="工序名称"  width="120"></el-table-column>
+
+          <el-table-column prop="labourHourAmount" label="工时数" width="130"></el-table-column>
+
+          <el-table-column prop="amountUnit" label="单位" width="120"></el-table-column>
+
+          <el-table-column prop="costPrice" label="单位工时成本" width="120"></el-table-column>
+
+          <el-table-column prop="subtotal" label="小计" width="130"></el-table-column>
+
+          <el-table-column  label="操作" width="130">
+            <template slot-scope="scope">
+              <el-button type="info"  icon="el-icon-view" @click="openChouti(scope.row.id)" plain>详细</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editwinshow = false">取 消</el-button>
+      </div>
+
+    </el-dialog>
+
+    <!--查询所以工序的抽屉-->
+    <el-drawer
+      title="物料工序!"
+      :before-close="handleClose"
+      :visible.sync="table"
+      direction="ttb"
+      custom-class="demo-drawer"
+      size="50%">
+      <el-table style="margin:auto;width: 911px"  border :data="gridData">
+        <el-table-column property="detailsNumber"   label="物料序号" width="150"></el-table-column>
+        <el-table-column property="productName" label="物料名称" width="150"></el-table-column>
+        <el-table-column property="type" label="用途" width="150">
+          <template slot-scope="scope">
+            <span v-if="scope.row.type==1">商品</span>
+            <span v-else="">物料</span>
+          </template>
+        </el-table-column>
+        <el-table-column property="amount" label="本工序数量" width="150"></el-table-column>
+        <el-table-column property="costPrice" label="单价" width="150"></el-table-column>
+        <el-table-column property="subtotal" label="小计" width="150"></el-table-column>
+      </el-table>
+    </el-drawer>
   </div>
 </template>
 
@@ -112,6 +188,10 @@
           pageno: 1,//页号
           pagesize: 5,//页大小
           total: 0,//总数据量
+          editform:{},//工序数据
+          editwinshow: false,//添加的模态框
+          table: false,//抽屉
+          gridData: [],//所有物料集合
         };
       },
       methods: {
@@ -139,7 +219,7 @@
             params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
           }
           // 请求地址
-          this.$axios.post("DesignProcedure/queryGongXuShenHe", params).then(function (response) {
+          this.$axios.post("DesignProcedure/queryGongXuWuLiaoList", params).then(function (response) {
             _this.tableData = response.data.records;
             _this.total = response.data.total;
           }).catch();
@@ -156,13 +236,27 @@
         },
 
         openeditwin(id) {  //打开编辑页面
+          console.log(id);
           this.editwinshow = true;
           var _this = this;
           var params = new URLSearchParams();
           params.append("id", id);
-          this.$axios.post("DesignProcedure/queryGongXuWuLiaoList", params).then(function (response) {
+          this.$axios.post("DesignProcedure/SelectByGongXuId", params).then(function (response) {
             _this.editform = response.data;
           }).catch();
+        },
+
+        openChouti(id){ //打开抽屉
+          this.table = true;
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id", id);
+          this.$axios.post("DesignProcedureModule/selectWuLiaoByid", params).then(function (response) {
+            _this.gridData = response.data;
+          }).catch();
+        },
+        handleClose(){
+          this.table=false;
         },
       } ,
       created(){

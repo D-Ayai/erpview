@@ -352,7 +352,6 @@
           }
           this.editwinshow = false;
           var _this =this;
-          var params = new URLSearchParams();
           this.$axios.post("DesignProcedure/DesignAdd", JSON.stringify(this.manufa),
             {
               headers: {"Content-Type": "application/json"}

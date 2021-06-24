@@ -176,6 +176,7 @@
         onSubmit() {//查询
           this.getdata();
         },
+
         getcaidan(){//查询菜单
           this.$axios.get("Config/queryAll").then((response)=>{
             this.chafrom.options=response.data;
@@ -202,6 +203,7 @@
             _this.total = response.data.total;
           }).catch();
         },
+
         handleSizeChange(val) {  //页size变更
           this.pagesize = val;
           this.pageno = 1;
