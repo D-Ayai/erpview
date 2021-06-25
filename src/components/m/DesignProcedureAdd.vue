@@ -172,7 +172,7 @@
 
           <el-table-column label="小计" width="150">
             <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.subtotal"></el-input>
+              <el-input clearable v-model="scope.row|| XiaoJi"></el-input>
             </template>
           </el-table-column>
         </el-table>
@@ -352,7 +352,6 @@
           }
           this.editwinshow = false;
           var _this =this;
-          var params = new URLSearchParams();
           this.$axios.post("DesignProcedure/DesignAdd", JSON.stringify(this.manufa),
             {
               headers: {"Content-Type": "application/json"}
@@ -375,10 +374,20 @@
             _this.getdata();
           }).catch();
         },
-
-
-
-
+      },
+      filters: {   //过滤器
+        XiaoJi(val){
+          var a=0;
+          if(val.labourHourAmount!=undefined){
+            a=val.labourHourAmount;
+          }
+          var b=0;
+          if(val.costPrice!=undefined){
+            a=val.costPrice;
+          }
+          val.subtotal=a*b;
+          return val.subtotal;
+        },
       },
       created(){
         this.getcaidan();

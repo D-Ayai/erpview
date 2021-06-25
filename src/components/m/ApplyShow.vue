@@ -4,8 +4,8 @@
     <h4>
       <el-steps :active="2" simple>
         <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="产品生产工序设计" icon="el-icon-upload"></el-step>
-        <el-step title="制定产品生产工序设计单" icon="el-icon-picture"></el-step>
+        <el-step title="生产计划管理" icon="el-icon-upload"></el-step>
+        <el-step title="生产计划审核" icon="el-icon-picture"></el-step>
       </el-steps>
     </h4>
 
@@ -33,7 +33,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search"  @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -42,43 +42,34 @@
       :data="tableData"
       stripe
       border
+      :header-cell-style="{background:'#E4E7ED', color:'#606266'}"
       style="width: 100%">
       <el-table-column
-        prop="designId"
-        label="设计编号"
-        width="180">
+        prop="applyId"
+        label="生产计划编号">
       </el-table-column>
       <el-table-column
-        prop="productId"
-        label="产品编号"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="productName"
-        label="产品名称"
-        width="140">
+        prop="register"
+        label="登记人">
       </el-table-column>
       <el-table-column
         prop="registerTime"
-        label="登记时间"
-        width="240">
+        label="登记时间">
       </el-table-column>
       <el-table-column
-        prop="costPriceSum"
-        label="工时总成本"
-        width="140">
+        prop="remark"
+        label="备注">
       </el-table-column>
-      <el-table-column label="审核状态" width="140">
+      <el-table-column  label="审核状态">
         <template  slot-scope="scope">
-          <span v-if="scope.row.checkTag==1" style="color:green">审核通过</span>
-          <span v-else-if="scope.row.checkTag==2" style="color:red">审核不通过</span>
-          <span v-else="" style="color:orange">等待</span>
+          <span v-if="scope.row.checkTag==0" style="color:orange">未审核</span>
+          <span v-else-if="scope.row.checkTag==1" style="color:green">已通过</span>
+          <span v-else="" style="color:red">未通过</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="操作" >
+      <el-table-column  label="查看">
         <template slot-scope="scope">
-          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row.id)" plain>详细</el-button>
+          <el-button type="info"  icon="el-icon-view"  @click="openeditwin(scope.row)" plain>查看</el-button>
         </template>
       </el-table-column>
 
@@ -96,51 +87,50 @@
     </el-pagination>
 
     <!-- 查询模态框 -->
-    <el-dialog  title="详细" width="60%"  :visible="editwinshow">
+    <el-dialog  title="生产工序设计单" width="60%"  :visible.sync="editwinshow">
 
       <el-form :inline="true"  :modal="editform">
-
-        <el-form-item label="设计单编号:" style="width:35%">
-          <span style="color: midnightblue" >{{editform.designId}}</span>
-        </el-form-item>
-        <el-form-item label="产品编号:" style="width: 35%" >
+        <el-form-item label="生产计划编号:" style="width:35%" >
           <span style="color: midnightblue">{{editform.productId}}</span>
         </el-form-item>
-        <el-form-item label="产品名称:" style="width:20%"  >
-          <span style="color: midnightblue">{{editform.productName}}</span>
+        <el-form-item label="生产计划总数量:" style="width:35%" >
+          <span style="color: midnightblue">{{sum}}</span>
         </el-form-item>
         <br>
-        <el-form-item label="设计人:" style="width:35%">
-          <span style="color: midnightblue">{{editform.designer}}</span>
+        <el-form-item label="登记人:" style="width:35%">
+          <span style="color: midnightblue" >{{editform.register}}</span>
         </el-form-item>
         <el-form-item label="登记时间:" style="width:35%">
           <span style="color: midnightblue">{{editform.registerTime}}</span>
         </el-form-item>
-        <el-form-item label="工时总成本:" style="width:25%">
-          <span style="color: midnightblue">{{editform.costPriceSum}}</span>
-        </el-form-item>
         <br>
-        <el-form-item v-if="editform.checker!=null"  style="width:35%" label="审核人:">
+        <el-form-item label="审核人" style="width:35%">
           <span style="color: midnightblue">{{editform.checker}}</span>
         </el-form-item>
-        <el-form-item v-if="editform.procedureDescribe!=null" style="width:35%"  label="设计要求:">
-          <span style="color: midnightblue">{{editform.procedureDescribe}}</span>
+        <el-form-item label="审核时间" style="width:35%">
+          <span style="color: midnightblue">{{editform.checkTime}}</span>
         </el-form-item>
+
+        <br>
         <!--表格-->
-        <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
+        <el-table  ref="multipleSelection" :data="detailsList" stripe  border style="width: 100%">
 
-          <el-table-column  prop="detailsNumber" label="工序序号"  width="120"></el-table-column>
+          <el-table-column  prop="productId" label="产品编号" ></el-table-column>
 
-          <el-table-column prop="procedureName"  label="工序名称"  width="140"></el-table-column>
+          <el-table-column prop="productName"  label="产品名称"  ></el-table-column>
 
-          <el-table-column prop="labourHourAmount" label="工时数" width="150"></el-table-column>
+          <el-table-column prop="type" label="用途类型" >
+            <template slot-scope="scope">
+              <span v-if="scope.row.type==1">商品</span>
+              <span v-else="">物料</span>
+            </template>
+          </el-table-column>
 
-          <el-table-column prop="amountUnit" label="单位" width="140"></el-table-column>
+          <el-table-column prop="amount" label="数量" ></el-table-column>
 
-          <el-table-column prop="costPrice" label="单位工时成本" width="150"></el-table-column>
-
-          <el-table-column prop="subtotal" label="小计" width="150"></el-table-column>
         </el-table>
+        <br>
+
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -153,30 +143,34 @@
 
 <script>
     export default {
-        name: "DesignProcedureShow",
-      data(){
+      name: "ApplyShow",
+      data() {
         return {
-          chafrom:{//查询表单
+          chafrom: {//查询表单
             value: '',//选中的菜单值
-            tjname:"",//产品名称
-            options:[],//三级联动菜单
-            registerTime:"",//时间
+            tjname: "",//产品名称
+            options: [],//三级联动菜单
+            registerTime: "",//时间
           },
           tableData: [],//表格数据
           pageno: 1,//页号
           pagesize: 5,//页大小
           total: 0,//总数据量
-          editform:{},//工序数据
+          editform: {
+            checker: "abc",
+          },//工序数据
           editwinshow: false,//添加的模态框
+          detailsList: []//模态框的表格数据
         };
       },
-      methods:{
+      methods: {
         onSubmit() {//查询
           this.getdata();
         },
-        getcaidan(){//查询菜单
-          this.$axios.get("Config/queryAll").then((response)=>{
-            this.chafrom.options=response.data;
+
+        getcaidan() {//查询菜单
+          this.$axios.get("Config/queryAll").then((response) => {
+            this.chafrom.options = response.data;
           }).catch();
         },
 
@@ -190,16 +184,17 @@
           params.append("secondkindname", this.chafrom.value[1]);//II级菜单名称
           params.append("thirdkindname", this.chafrom.value[2]);//III级菜单名称
 
-          if (this.chafrom.registerTime!=""){//时间
+          if (this.chafrom.registerTime != "") {//时间
             params.append("starttime", this.chafrom.registerTime[0]);//开始时间()
             params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
           }
           // 请求地址
-          this.$axios.post("DesignProcedure/queryGongXuAll", params).then(function (response) {
+          this.$axios.post("Apply/selectGroupApplyIdList", params).then(function (response) {
             _this.tableData = response.data.records;
             _this.total = response.data.total;
           }).catch();
         },
+
         handleSizeChange(val) {  //页size变更
           this.pagesize = val;
           this.pageno = 1;
@@ -210,20 +205,31 @@
           this.pageno = val;
           this.getdata();
         },
-        openeditwin(id) {  //打开编辑页面
+
+        openeditwin(row) {  //打开编辑页面
+          this.editform = row
           this.editwinshow = true;
           var _this = this;
           var params = new URLSearchParams();
-          params.append("id", id);
-          this.$axios.post("DesignProcedure/SelectByGongXuId", params).then(function (response) {
-            _this.editform=response.data;
+          params.append("applyId", row.applyId);
+          this.$axios.post("Apply/selectByApplyId", params).then(function (response) {
+            _this.detailsList = response.data;
           }).catch();
         },
       },
-      created(){
+      created() {
         this.getcaidan();
         this.getdata();
       },
+      computed:{
+        sum () {
+          var  sum=0;
+          for(var i=0;i<this.detailsList.length;i++){
+            sum += this.detailsList[i].amount;
+          }
+          return sum;
+        }
+      }
     }
 </script>
 

@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column  label="操作">
         <template slot-scope="scope">
-          <el-button  type="primary" icon="el-icon-edit" @click="openeditwin(scope.row.id,row)">添加物料</el-button>
+          <el-button  type="primary" icon="el-icon-edit" @click="openeditwin(scope.row.id)">添加物料</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -119,14 +119,13 @@
         <!--表格-->
         <el-table  ref="multipleSelection" :data="editform.detailsList"  stripe  border  style="width: 100%">
 
-          <el-table-column type="selection"  width="55"></el-table-column>
           <el-table-column  prop="procedureId" label="工序编号"  width="100"></el-table-column>
 
-          <el-table-column prop="procedureName"  label="工序名称"  width="110"></el-table-column>
+          <el-table-column prop="procedureName"  label="工序名称"  width="130"></el-table-column>
 
-          <el-table-column prop="labourHourAmount" label="工时数" width="100"></el-table-column>
+          <el-table-column prop="labourHourAmount" label="工时数" width="110"></el-table-column>
 
-          <el-table-column prop="amountUnit" label="单位" width="110"></el-table-column>
+          <el-table-column prop="amountUnit" label="单位" width="130"></el-table-column>
 
           <el-table-column prop="costPrice"  label="单位工时成本" width="120"></el-table-column>
 
@@ -134,8 +133,8 @@
 
           <el-table-column  label="操作" width="130">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.ispanduan==true" type="success" icon="el-icon-edit" @click="openeSheJiwin(scope.row)">查询设计</el-button>
-              <el-button v-else="" type="primary" icon="el-icon-edit" @click="openeSheJiwin(scope.row)">设计</el-button>
+              <el-button v-if="scope.row.designModuleTag==0" type="success"  icon="el-icon-edit" @click="openeSheJiwin(scope.row)" plain>设计</el-button>
+              <el-button v-else="" type="warning"  icon="el-icon-edit" @click="openeChongXinwin(scope.row)" plain>重新设计</el-button>
             </template>
           </el-table-column>
 
@@ -145,7 +144,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">取 消</el-button>
-        <el-button type="success"   icon="el-icon-edit"   @click="btnsave">提交</el-button>
+        <el-button type="success"   icon="el-icon-check"   @click="btnsave(editform.id)">提交</el-button>
       </div>
 
     </el-dialog>
@@ -158,15 +157,25 @@
       direction="ttb"
       custom-class="demo-drawer"
       size="50%">
-      <el-table style="margin:auto;width: 901px"  border :data="gridData">
-        <el-table-column property="detailsNumber"   label="物料序号" width="150"></el-table-column>
-        <el-table-column property="productName" label="物料名称" width="150"></el-table-column>
-        <el-table-column property="type" label="用途" width="150"></el-table-column>
-        <el-table-column property="residualAmount" label="可用数量" width="150"></el-table-column>
-        <el-table-column property="costPrice" label="单价" width="150"></el-table-column>
-        <el-table-column label="需要数量" width="150">
+      <el-table style="margin:auto;width: 911px"  border :data="gridData">
+        <el-table-column property="detailsNumber"   label="物料序号" width="130"></el-table-column>
+        <el-table-column property="productName" label="物料名称" width="130"></el-table-column>
+        <el-table-column property="type" label="用途" width="130">
           <template slot-scope="scope">
-            <el-input  clearable v-model="scope.row.amount"></el-input>
+            <span v-if="scope.row.type==1">商品</span>
+            <span v-else="">物料</span>
+          </template>
+        </el-table-column>
+        <el-table-column property="residualAmount" label="可用数量" width="130"></el-table-column>
+        <el-table-column property="costPrice" label="单价" width="130"></el-table-column>
+        <el-table-column  label="小计" width="130">
+          <template slot-scope="scope">
+            {{scope.row | XiaoJI}}
+          </template>
+        </el-table-column>
+        <el-table-column label="需要数量" width="130">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.xuyao"></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -175,122 +184,198 @@
         <el-button type="primary" @click="handleClose()">确 定</el-button>
       </div>
     </el-drawer>
+
   </div>
 </template>
 
 <script>
-    export default {
-        name: "DesignProcedureModule",
-      data(){
-        return  {
-          chafrom:{//查询表单
-            value: '',//选中的菜单值
-            tjname:"",//产品名称
-            options:[],//三级联动菜单
-            registerTime:"",//时间
-          },
-          tableData: [],//表格数据
-          pageno: 1,//页号
-          pagesize: 5,//页大小
-          total: 0,//总数据量
-          editform:{},
-          editwinshow: false,//添加的模态框
-          table: false,//抽屉
-          gridData: [],//所有物料集合
-          shuju:[],
-          GongXusetid:[],
-        };
-      },
-      methods: {
-        onSubmit() {//查询
-          this.getdata();
+  export default {
+    name: "DesignProcedureModule",
+    data(){
+      return  {
+        chafrom:{//查询表单
+          value: '',//选中的菜单值
+          tjname:"",//产品名称
+          options:[],//三级联动菜单
+          registerTime:"",//时间
         },
-
-        getcaidan() {//查询菜单
-          this.$axios.get("Config/queryAll").then((response) => {
-            this.chafrom.options = response.data;
-          }).catch();
-        },
-
-        getdata() {   //获取数据
-          var _this = this;
-          var params = new URLSearchParams();
-          params.append("pageno", this.pageno);//页号
-          params.append("pagesize", this.pagesize);//页大小
-          params.append("tjname", this.chafrom.tjname);//产品名称
-          params.append("firskindname", this.chafrom.value[0]);//I级菜单名称
-          params.append("secondkindname", this.chafrom.value[1]);//II级菜单名称
-          params.append("thirdkindname", this.chafrom.value[2]);//III级菜单名称
-
-          if (this.chafrom.registerTime != "") {//时间
-            params.append("starttime", this.chafrom.registerTime[0]);//开始时间()
-            params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
-          }
-          // 请求地址
-          this.$axios.post("DesignProcedure/queryGongXuShenHeCG", params).then(function (response) {
-            _this.tableData = response.data.records;
-            _this.total = response.data.total;
-          }).catch();
-        },
-
-        handleSizeChange(val) {  //页size变更
-          this.pagesize = val;
-          this.pageno = 1;
-          this.getdata();
-        },
-
-        handleCurrentChange(val) {  //页码变更
-          this.pageno = val;
-          this.getdata();
-        },
-
-        openeditwin(id) {  //打开模态框页面
-          this.editwinshow = true;
-          var _this = this;
-          var params = new URLSearchParams();
-          params.append("id", id);
-          this.$axios.post("DesignProcedure/SelectByGongXuId", params).then(function (response) {
-            _this.editform = response.data;
-          }).catch();
-          var params2 = new URLSearchParams();
-          params2.append("procedureId", this.editform.productId);
-          this.$axios.post("ModuleDetails/WuLiaoGongXu", params2).then(function (response) {
-            _this.gridData = response.data;
-          }).catch();
-        },
-
-        openeSheJiwin(row){ //根据物品编号查询物料
-          row.ispanduan=true;
-          this.table=true;
-        },
-
-        handleClose(done) {//抽屉关闭时的操作
-          for (let i = this.gridData.length - 1; i >= 0; i--) {
-            if(this.gridData[i].amount!=""){
-              var Keyong= this.gridData[i].residualAmount-this.gridData[i].amount;
-              if (Keyong>=0){
-                this.gridData[i].residualAmount-=this.gridData[i].amount;
-                this.shuju.push(this.gridData[i])
-              }else {
-                this.$message.error('失败'+this.gridData[i].productName+"可用数量不足,请重新添加");
-                 return false;
-              }
-            }
-          }
-          this.table = false;
-        },
-        cancelForm(){//抽屉取消按钮的操作
-          this.table = false;
-        },
-        btnsave(){//提交按钮
-
-        },
-      } ,
-      created(){
-        this.getcaidan();
+        tableData: [],//表格数据
+        pageno: 1,//页号
+        pagesize: 5,//页大小
+        total: 0,//总数据量
+        editform:{},
+        editwinshow: false,//添加的模态框
+        table: false,//抽屉
+        gridData: [],//所有物料集合
+        shuju:[],
+        GongXusetid:[],
+        dakaiid: {},//打开抽屉id编号
+      };
+    },
+    methods: {
+      onSubmit() {//查询
         this.getdata();
       },
-    }
+
+      getcaidan() {//查询菜单
+        this.$axios.get("Config/queryAll").then((response) => {
+          this.chafrom.options = response.data;
+        }).catch();
+      },
+
+      getdata() {   //获取数据
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("pageno", this.pageno);//页号
+        params.append("pagesize", this.pagesize);//页大小
+        params.append("tjname", this.chafrom.tjname);//产品名称
+        params.append("firskindname", this.chafrom.value[0]);//I级菜单名称
+        params.append("secondkindname", this.chafrom.value[1]);//II级菜单名称
+        params.append("thirdkindname", this.chafrom.value[2]);//III级菜单名称
+
+        if (this.chafrom.registerTime != "") {//时间
+          params.append("starttime", this.chafrom.registerTime[0]);//开始时间()
+          params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
+        }
+        // 请求地址
+        this.$axios.post("DesignProcedure/queryGongXuShenHeCG", params).then(function (response) {
+          _this.tableData = response.data.records;
+          _this.total = response.data.total;
+        }).catch();
+      },
+
+      handleSizeChange(val) {  //页size变更
+        this.pagesize = val;
+        this.pageno = 1;
+        this.getdata();
+      },
+
+      handleCurrentChange(val) {  //页码变更
+        this.pageno = val;
+        this.getdata();
+      },
+
+      openeditwin(id) {  //打开模态框页面
+        this.editwinshow = true;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("id", id);
+        this.$axios.post("DesignProcedure/SelectByGongXuId", params).then(function (response) {
+          _this.editform = response.data;
+        }).catch();
+      },
+
+      openeSheJiwin(row){ //根据物品编号查询物料
+        this.dakaiid=row;
+        row.designModuleTag=1;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("procedureId", this.editform.productId);
+        this.$axios.post("ModuleDetails/WuLiaoGongXu", params).then(function (response) {
+          _this.gridData = response.data;
+        }).catch();
+        this.table=true;
+      },
+
+      handleClose() {//抽屉关闭时的操作
+        for (let i = 0; i < this.gridData.length; i++) {
+          if(this.gridData[i].xuyao==undefined){
+            this.gridData[i].xuyao=0;
+          }
+            var Keyong= this.gridData[i].residualAmount-this.gridData[i].xuyao;
+            if (Keyong>=0){
+              this.gridData[i].residualAmount=Keyong;
+             /* this.gridData[i].residualAmount-=this.gridData[i].xuyao;*/
+              this.gridData[i].amount=this.gridData[i].xuyao;
+              this.gridData[i].parentId=this.dakaiid.id;
+              this.shuju.push(this.gridData[i])
+            }else {
+              this.$message.error('失败'+this.gridData[i].productName+"可用数量不足,请重新添加");
+              return false;
+            }
+
+        }
+        this.table = false;
+        var _this =this;
+        this.$axios.post("DesignProcedureModule/add", JSON.stringify(this.shuju),
+          {
+            headers: {"Content-Type": "application/json"}
+          }).then(function (response) {
+          if (response.data == true) {
+            _this.$message({
+              message: '设计添加',
+              type: 'success'
+            });
+          } else {
+            _this.$message.error('错误设计');
+          }
+        }).catch();
+        this.shuju=[];
+      },
+
+      openeChongXinwin(row){ //重新设计按钮
+        this.dakaiid=row;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("Id",row.id);
+        this.$axios.post("ModuleDetails/ChongXin", params).then(function (response) {
+          _this.gridData = response.data;
+        }).catch();
+        this.table=true;
+      },
+
+      cancelForm(){//抽屉取消按钮的操作
+        this.dakaiid.designModuleTag=0;
+        this.table = false;
+      },
+
+      btnsave(id){//提交按钮
+        for (let i = 0; i < this.gridData.length; i++) {
+          if (this.gridData[i].residualAmount>0){
+            this.$message.error('失败'+this.gridData[i].productName+"可用数量还有未设计,请重新设计");
+            return false;
+          }
+        }
+         this.editwinshow =false;
+        var _this =this;
+        var params = new URLSearchParams();
+        params.append("id", id);
+        this.$axios.post("DesignProcedure/GongXuWuLiaoZZ", params).then(function (response) {
+          _this.editform = response.data;
+            if (response.data == true) {
+              _this.$notify({
+                title: '成功',
+                message: '设计成功',
+                type: 'success'
+              });
+            } else {
+              _this.$notify({
+                title: '失败',
+                message: '设计失败',
+                type: 'danger'
+              });
+            }
+            _this.pageno = 1;
+            //刷新表格数据
+            _this.getdata();
+          }).catch();
+      },
+
+    } ,
+    filters: {   //过滤器
+      XiaoJI(val){
+        var a =0;
+        if(val.xuyao!=undefined){
+          a=val.xuyao;
+        }
+        return a*val.costPrice;
+      }
+    },
+    created(){
+      this.getcaidan();
+      this.getdata();
+    },
+  }
 </script>
 
 <style scoped>
