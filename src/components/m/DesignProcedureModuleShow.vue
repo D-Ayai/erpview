@@ -42,6 +42,7 @@
       :data="tableData"
       stripe
       border
+
       style="width: 100%">
       <el-table-column
         prop="designId"

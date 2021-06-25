@@ -46,29 +46,29 @@
             <!--一级菜单-->
             <el-submenu :index="parentmenu.id+''" v-for="parentmenu in menutable">
               <template slot="title">
-                <i :class="parentmenu.linkUrl"></i>
+                <i :class="parentmenu.imageUrl"></i>
                 <span style="font-weight:bold">{{parentmenu.name}}</span>
               </template>
               <!--二级菜单-->
               <el-submenu :index="childmenu.id+''" v-for="childmenu in parentmenu.childMenu">
                 <template slot="title">
-                  <i :class="childmenu.iconUrl"></i>
+                  <i :class="childmenu.imageUrl"></i>
                   <span>{{childmenu.name}}</span>
                 </template>
                 <!--三级菜单-->
                 <el-menu-item v-if="cd.childMenu.length === 0" @click="addTab(cd.name,cd.linkUrl)" :index="cd.id+''" v-for="cd in childmenu.childMenu">
-                  <i :class="cd.iconUrl"></i>
+                  <i :class="cd.imageUrl"></i>
                   <span>{{cd.name}}</span>
                 </el-menu-item>
 
                 <el-submenu v-if="cd.childMenu.length !== 0" :index="cd.id+''" v-for="cd in childmenu.childMenu">
                   <template slot="title">
-                    <i :class="cd.iconUrl"></i>
+                    <i :class="cd.imageUrl"></i>
                     <span>{{cd.name}}</span>
                   </template>
                   <!--三级菜单-->
                   <el-menu-item  @click="addTab(cdd.name,cdd.linkUrl)" :index="cdd.id+''" v-for="cdd in cd.childMenu">
-                    <i :class="cdd.iconUrl"></i>
+                    <i :class="cdd.imageUrl"></i>
                     <span>{{cdd.name}}</span>
                   </el-menu-item>
                 </el-submenu>
@@ -140,6 +140,14 @@
   import DesignProcedureModuleUpdate from "./components/m/DesignProcedureModuleUpdate";
   import Outboundregistration from "./components/Delivery/Outboundregistration";
   import Outboundscheduling from "./components/Delivery/Outboundscheduling.vue";
+  import ApplyAdd from "./components/m/ApplyAdd.vue";
+  import ApplyShenHe from "./components/m/ApplyShenHe.vue";
+  import ApplyShow from "./components/m/ApplyShow.vue";
+
+
+
+
+
   export default {
     name: "App",
     data(){
@@ -225,7 +233,7 @@
       filerecovery,filepermanentlydeleted,Inven,Outboundapplication,filelist,FileShenghe,FileQuery,FileUpdate,addModule,
       queryModule,moduleUpdate,ModuleSh,DesignProcedureShengHe,DesignProcedureShow,DesignProcedureUpdate,
       DesignProcedureModuleAdd,DesignProcedureModuleShenHe,DesignProcedureModuleShow,DesignProcedureModuleUpdate,
-      Outboundregistration,Outboundscheduling
+      Outboundregistration,Outboundscheduling,ApplyAdd,ApplyShenHe,ApplyShow
     }
   }
 </script>
