@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="产品生产工序设计" icon="el-icon-upload"></el-step>
-        <el-step title="产品生产工序设计单变更" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="产品生产工序设计" icon="el-icon-sell"></el-step>
+        <el-step title="产品生产工序设计单变更" icon="el-icon-edit-outline"></el-step>
       </el-steps>
     </h4>
 
@@ -128,31 +128,32 @@
         <el-table  ref="multipleSelection" :data="editform.detailsList"  stripe  border  @selection-change="handleSelectionChange"  style="width: 100%">
 
           <el-table-column type="selection"  width="55"></el-table-column>
-          <el-table-column  prop="procedureId" label="工序编号"  width="100"></el-table-column>
+          <el-table-column  prop="procedureId" label="工序编号" ></el-table-column>
 
-          <el-table-column prop="procedureName"  label="工序名称"  width="120"></el-table-column>
+          <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
 
-          <el-table-column label="工时数" width="130">
+          <el-table-column label="工时数">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.labourHourAmount"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="单位" width="130">
+          <el-table-column label="单位">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.amountUnit"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="单位工时成本" width="130">
+          <el-table-column label="单位工时成本">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.costPrice"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="小计" width="130">
+          <el-table-column label="小计">
             <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.subtotal"></el-input>
+              <span  v-if="isNaN(scope.row.labourHourAmount*scope.row.costPrice)">0</span>
+              <span  v-else="">{{scope.row.labourHourAmount*scope.row.costPrice}}</span>
             </template>
           </el-table-column>
 

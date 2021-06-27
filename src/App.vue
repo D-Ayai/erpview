@@ -39,7 +39,7 @@
       </el-header>
 
 
-      <el-container >
+      <el-container>
         <!--左部-->
         <el-aside style="width:250px;">
           <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
@@ -143,7 +143,12 @@
   import ApplyAdd from "./components/m/ApplyAdd.vue";
   import ApplyShenHe from "./components/m/ApplyShenHe.vue";
   import ApplyShow from "./components/m/ApplyShow.vue";
-
+  import ProductionDispatchAdd from "./components/m/ProductionDispatchAdd.vue";
+  import ProductionDispatchShenhe from "./components/m/ProductionDispatchShenhe.vue";
+  import ProductionDispatchShow from "./components/m/ProductionDispatchShow.vue";
+  import InternalProductionAdd from "./components/m/InternalProductionAdd.vue";
+  import InternalProductionShenhe from "./components/m/InternalProductionShenhe.vue";
+  import InternalProductionShow from "./components/m/InternalProductionShow.vue";
 
 
 
@@ -233,7 +238,8 @@
       filerecovery,filepermanentlydeleted,Inven,Outboundapplication,filelist,FileShenghe,FileQuery,FileUpdate,addModule,
       queryModule,moduleUpdate,ModuleSh,DesignProcedureShengHe,DesignProcedureShow,DesignProcedureUpdate,
       DesignProcedureModuleAdd,DesignProcedureModuleShenHe,DesignProcedureModuleShow,DesignProcedureModuleUpdate,
-      Outboundregistration,Outboundscheduling,ApplyAdd,ApplyShenHe,ApplyShow
+      Outboundregistration,Outboundscheduling,ApplyAdd,ApplyShenHe,ApplyShow,ProductionDispatchAdd,ProductionDispatchShenhe,
+      ProductionDispatchShow,InternalProductionAdd,InternalProductionShenhe,InternalProductionShow
     }
   }
 </script>

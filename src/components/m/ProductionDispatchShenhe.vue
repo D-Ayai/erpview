@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
-        <el-step title="产品生产工序设计" icon="el-icon-shopping-bag-1"></el-step>
-        <el-step title="工序物料设计单查询" icon="el-icon-search"></el-step>
+        <el-step title="生产管理" icon="el-icon-edit"></el-step>
+        <el-step title="生产调度管理" icon="el-icon-pie-chart"></el-step>
+        <el-step title="生产派工单审核" icon="el-icon-magic-stick"></el-step>
       </el-steps>
     </h4>
 
@@ -33,57 +33,37 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search"  @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
 
     <!-- 表格 -->
-    <el-table
-      :data="tableData"
-      stripe
-      border
-
-      style="width: 100%">
-      <el-table-column
-        prop="designId"
-        label="设计编号"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="productId"
-        label="产品编号"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="productName"
-        label="产品名称">
-      </el-table-column>
-      <el-table-column
-        prop="registerTime"
-        label="登记时间"
-        width="200">
-      </el-table-column>
-      <el-table-column
-        prop="costPriceSum"
-        label="工时总成本">
-      </el-table-column>
-      <el-table-column
-        prop="moduleCostPriceSum"
-        label="物料总成本">
-      </el-table-column>
-      <el-table-column label="未设计状态" >
-        <template  slot-scope="scope">
-          <span v-if="scope.row.designModuleTag==1" style="color:orange">待审核</span>
-          <span v-else-if="scope.row.designModuleTag==2" style="color:green">已审核</span>
+    <el-table :data="tableData" stripe border style="width: 100%">
+      <el-table-column prop="manufactureId"  label="派工单编号" width="200px"></el-table-column>
+      <el-table-column prop="productId" label="产品编号" width="200px"></el-table-column>
+      <el-table-column prop="productName" label="产品名称"></el-table-column>
+      <el-table-column prop="amount" label="投产数量"></el-table-column>
+      <el-table-column prop="testedAmount" label="合格数量"></el-table-column>
+      <el-table-column prop="" label="派工单状态"></el-table-column>
+      <el-table-column label="审核状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.checkTag==0" style="color:orange">待审核</span>
+          <span v-else-if="scope.row.checkTag==1" style="color:green">已审核</span>
           <span v-else="" style="color:red">未设计</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" >
+      <el-table-column prop="manufactureProcedureTag" label="生产状态">
         <template slot-scope="scope">
-          <el-button type="info" @click="openeditwin(scope.row.id)" plain>详细</el-button>
+          <span v-if="scope.row.manufactureProcedureTag==0" style="color:red">待登记</span>
+          <span v-else-if="scope.row.manufactureProcedureTag==1" style="color:orange">未审核</span>
+          <span v-else="" style="color:green">已完工</span>
         </template>
       </el-table-column>
-
+      <el-table-column  label="审核">
+        <template slot-scope="scope">
+          <el-button type="warning"  icon="el-icon-edit-outline"  @click="openeditwin(scope.row.id)" plain>审核</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <!-- 分页  -->
@@ -101,52 +81,77 @@
     <el-dialog  title="生产工序设计单" width="60%"  :visible="editwinshow">
 
       <el-form :inline="true"  :modal="editform">
-        <el-form-item label="产品编号:" style="width:35%" >
+        <el-form-item label="设计单编号:" style="width:35%" >
           <span style="color: midnightblue">{{editform.productId}}</span>
         </el-form-item>
         <el-form-item label="产品名称:" style="width:35%"  >
           <span style="color: midnightblue">{{editform.productName}}</span>
         </el-form-item>
-        <el-form-item label="物料总成本:" style="width:25%">
-          <span style="color: midnightblue">{{editform.moduleCostPriceSum}}</span>
+        <el-form-item label="数量:" style="width:25%">
+          <span style="color: midnightblue">{{editform.amount}}</span>
         </el-form-item>
         <br>
-        <el-form-item label="设计单编号:" style="width:35%">
-          <span style="color: midnightblue" >{{editform.designId}}</span>
+        <el-form-item label=" 派工单编号: " style="width:35%">
+          <span style="color: midnightblue" >{{editform.manufactureId}}</span>
         </el-form-item>
-        <el-form-item label="设计人:" style="width:35%">
-          <span style="color: midnightblue">{{editform.designer}}</span>
+        <el-form-item label="登记人:" style="width:35%">
+          <span style="color: midnightblue">{{editform.register}}</span>
         </el-form-item>
-        <el-form-item label="工时总成本:" style="width:25%">
-          <span style="color: midnightblue">{{editform.costPriceSum}}</span>
+        <el-form-item label="合格数量:" style="width:25%">
+          <span style="color: midnightblue">{{editform.testedAmount}}</span>
+        </el-form-item>
+        <br>
+        <el-form-item label=" 设计物料总成本:">
+          <span style="color: midnightblue" >{{editform.moduleCostPriceSum*editform.amount}}</span>
+        </el-form-item>
+        <el-form-item label="实际物料总成本:">
+          <span style="color: midnightblue">{{editform.realModuleCostPriceSum*editform.testedAmount}}</span>
+        </el-form-item>
+        <el-form-item label="设计工时总成本:">
+          <span style="color: midnightblue">{{editform.labourCostPriceSum*editform.amount}}</span>
+        </el-form-item>
+        <el-form-item label="实际工时总成本:" >
+          <span style="color: midnightblue">{{editform.realLabourCostPriceSum*editform.testedAmount}}</span>
         </el-form-item>
 
         <br>
         <!--表格-->
-        <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
+        <el-table  ref="multipleSelection" :data="editform.procedureList" stripe  border style="width: 100%">
 
-          <el-table-column  prop="detailsNumber" label="工序序号"  ></el-table-column>
+          <el-table-column  prop="detailsNumber" label="工序序号" ></el-table-column>
 
           <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
 
-          <el-table-column prop="labourHourAmount" label="工时数"></el-table-column>
+          <el-table-column prop="procedureFinishTag" label="工序状态" ></el-table-column>
 
-          <el-table-column prop="amountUnit" label="单位"></el-table-column>
+          <el-table-column prop="subtotal" label="设计工时成本(元)" ></el-table-column>
 
-          <el-table-column prop="costPrice" label="单位工时成本" ></el-table-column>
+          <el-table-column prop="realSubtotal" label="实际工时成本" ></el-table-column>
 
-          <el-table-column prop="subtotal" label="小计" ></el-table-column>
+          <el-table-column prop="moduleSubtotal" label="设计物料成本(元)" ></el-table-column>
 
-          <el-table-column  label="操作">
+          <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
+
+
+          <el-table-column  label="操作" width="130">
             <template slot-scope="scope">
               <el-button type="info"  icon="el-icon-view" @click="openChouti(scope.row.id)" plain>详细</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <br>
+        <el-form-item label="审核人" style="width:35%">
+          <el-input clearable placeholder='请手动输入设计人' v-model="editform.checker"></el-input>
+        </el-form-item>
+        <el-form-item label="登记时间:" style="width:35%">
+          <span style="color: midnightblue">{{editform.registerTime}}</span>
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">取 消</el-button>
+        <el-button type="success"  icon="el-icon-check"  @click="ShengHeYes()" >审核通过</el-button>
+        <el-button type="danger"  icon="el-icon-close"  @click="ShengHeNo()" >审核未通过</el-button>
       </div>
 
     </el-dialog>
@@ -160,16 +165,16 @@
       custom-class="demo-drawer"
       size="50%">
       <el-table style="margin:auto;width: 911px"  border :data="gridData">
-        <el-table-column property="detailsNumber"   label="物料序号" width="150"></el-table-column>
-        <el-table-column property="productName" label="物料名称" ></el-table-column>
-        <el-table-column property="type" label="用途" >
+        <el-table-column property="detailsNumber"   label="物料序号"></el-table-column>
+        <el-table-column property="productName" label="物料名称"></el-table-column>
+        <el-table-column property="type" label="用途">
           <template slot-scope="scope">
             <span v-if="scope.row.type==1">商品</span>
             <span v-else="">物料</span>
           </template>
         </el-table-column>
         <el-table-column property="amount" label="本工序数量"></el-table-column>
-        <el-table-column property="costPrice" label="单价" ></el-table-column>
+        <el-table-column property="costPrice" label="单价"></el-table-column>
         <el-table-column property="subtotal" label="小计"></el-table-column>
       </el-table>
     </el-drawer>
@@ -178,7 +183,7 @@
 
 <script>
     export default {
-        name: "DesignProcedureModuleShow.vue",
+        name: "ProductionDispatchShenhe.vue",
       data(){
         return  {
           chafrom:{//查询表单
@@ -201,6 +206,7 @@
         onSubmit() {//查询
           this.getdata();
         },
+
         getcaidan() {//查询菜单
           this.$axios.get("Config/queryAll").then((response) => {
             this.chafrom.options = response.data;
@@ -222,11 +228,12 @@
             params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
           }
           // 请求地址
-          this.$axios.post("DesignProcedure/queryGongXuWuLiaoList", params).then(function (response) {
+          this.$axios.post("Manufacture/selectShengHeAll", params).then(function (response) {
             _this.tableData = response.data.records;
             _this.total = response.data.total;
           }).catch();
         },
+
         handleSizeChange(val) {  //页size变更
           this.pagesize = val;
           this.pageno = 1;
@@ -239,12 +246,11 @@
         },
 
         openeditwin(id) {  //打开编辑页面
-          console.log(id);
           this.editwinshow = true;
           var _this = this;
           var params = new URLSearchParams();
           params.append("id", id);
-          this.$axios.post("DesignProcedure/SelectByGongXuId", params).then(function (response) {
+          this.$axios.post("Manufacture/SelectId", params).then(function (response) {
             _this.editform = response.data;
           }).catch();
         },
@@ -254,14 +260,49 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("id", id);
-          this.$axios.post("DesignProcedureModule/selectWuLiaoByid", params).then(function (response) {
+          this.$axios.post("ProcedureModule/SelectByParentId", params).then(function (response) {
             _this.gridData = response.data;
           }).catch();
         },
+
+        ShengHeYes(){
+          this.xiugai(true);
+        },
+        ShengHeNo(){
+          this.xiugai(false);
+        },
+        xiugai(type){
+          this.editwinshow = true;
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id",this.editform.id);
+          params.append("checker",this.editform.checker);
+          params.append("type",type);
+          this.$axios.post("Manufacture/UpdateByid", params).then(function (response) {
+            if (response.data == true){
+              _this.$notify({
+                title: '成功',
+                message: '操作成功',
+                type: 'success'
+              });
+            } else {
+              _this.$notify({
+                title: '失败',
+                message: '操作失败',
+                type: 'danger'
+              });
+            }
+            _this.pageno = 1;
+            //刷新表格数据
+            _this.getdata();
+          }).catch();
+          this.editwinshow=false;
+        },
         handleClose(){
           this.table=false;
+
         },
-      } ,
+      },
       created(){
         this.getcaidan();
         this.getdata();

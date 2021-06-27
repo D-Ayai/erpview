@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="生产计划管理" icon="el-icon-upload"></el-step>
-        <el-step title="生产计划审核" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="生产计划管理" icon="el-icon-set-up"></el-step>
+        <el-step title="生产计划审核" icon="el-icon-search"></el-step>
       </el-steps>
     </h4>
 
@@ -65,6 +65,12 @@
           <span v-if="scope.row.checkTag==0" style="color:orange">未审核</span>
           <span v-else-if="scope.row.checkTag==1" style="color:green">已通过</span>
           <span v-else="" style="color:red">未通过</span>
+        </template>
+      </el-table-column>
+      <el-table-column  label="派工标志">
+        <template  slot-scope="scope">
+          <span v-if="scope.row.manufactureTag===1" style="color:green">已派工</span>
+          <span v-else="" style="color:red">未派工</span>
         </template>
       </el-table-column>
       <el-table-column  label="查看">
