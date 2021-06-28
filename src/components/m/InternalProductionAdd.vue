@@ -87,6 +87,18 @@
 
     <!-- 查询模态框 -->
     <el-dialog  title="生产派工单" width="70%"  :visible="editwinshow">
+      <el-dialog
+        width="30%"
+        title="合格数量"
+        :visible.sync="innerVisible"
+        append-to-body>
+        <el-input placeholder="请输合格数量" v-model="jiaojieSl" clearable></el-input>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="innerVisible = false">取 消</el-button>
+          <el-button  type="primary" icon="el-icon-s-promotion" @click="jiaojiesltj" round>提交</el-button>
+        </div>
+      </el-dialog>
 
       <el-form :inline="true"  :modal="editform">
         <el-form-item label="设计单编号:" style="width:35%" >
@@ -140,18 +152,17 @@
           <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
 
 
-          <el-table-column  label="工序登记" width="130">
+          <el-table-column  label="工序登记">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.procedureFinishTag==0" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>登记</el-button>
-              <el-button v-else-if="scope.row.procedureFinishTag==2" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>重新登记</el-button>
-              <span  v-else="">已完成</span>
+              <el-button v-if="scope.row.procedureFinishTag!=3" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>登记</el-button>
+              <span  v-else="" style="color: green">已完成</span>
             </template>
           </el-table-column>
-          <el-table-column  label="工序交接" width="130">
-            <template v-if="scope.row.procedureFinishTag==4" slot-scope="scope">
-              <el-button v-if="scope.row.procedureTransferTag==0" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>交接</el-button>
-              <span v-else-if="scope.row.procedureTransferTag==1"  @click="openeSheJiwin(scope.row)"   style="color: orange" >待审核</span>
-              <span v-else="">交接完成</span>
+          <el-table-column  label="工序交接" >
+            <template v-if="scope.row.procedureFinishTag==3" slot-scope="scope">
+              <el-button v-if="scope.row.procedureTransferTag==0" type="success"  icon="el-icon-edit"  size="medium" @click="openJiaojieChouti(scope.row)" plain round>交接</el-button>
+              <span v-else-if="scope.row.procedureTransferTag==1"   style="color: orange" >待审核</span>
+              <span v-else="" style="color: green">交接完成</span>
             </template>
           </el-table-column>
         </el-table>
@@ -194,7 +205,17 @@
           <el-input clearable placeholder='请手动输入设计人' v-model="gongxu.gss"></el-input>
         </el-form-item>
         <el-form-item style="width:20%">
-          <el-button  type="primary" icon="el-icon-s-promotion" @click="motaiTijiao" round>确定</el-button>
+          <el-popover
+            placement="bottom"
+            width="20%"
+            v-model="visible">
+            <p>该工序是否完成?</p>
+            <div style="text-align: right; margin: 0">
+              <el-button type="primary" size="mini"  @click="motaiTijiao(false)">未完成</el-button>
+              <el-button type="primary" size="mini" @click="motaiTijiao(true)">已完成</el-button>
+            </div>
+            <el-button type="primary" icon="el-icon-s-promotion" slot="reference" round>确定</el-button>
+          </el-popover>
         </el-form-item>
 
 
@@ -232,12 +253,15 @@
           pageno: 1,//页号
           pagesize: 5,//页大小
           total: 0,//总数据量
+          id:'',//保存id
           editform:{},//工序数据
           gongxu:{},//打开抽屉保存当前工序
           editwinshow: false,//添加的模态框
           table: false,//抽屉
           gridData: [],//所有物料集合
-
+          jiaojieSl:'',//交接数量
+          innerVisible:false,//交接合格输入框
+          visible:false,
         };
       },
       methods: {
@@ -285,6 +309,7 @@
 
         openeditwin(id) {  //打开编辑页面
           this.editwinshow = true;
+          this.id=id;
           var _this = this;
           var params = new URLSearchParams();
           params.append("id", id);
@@ -304,47 +329,63 @@
           }).catch();
         },
 
-        motaiTijiao(){//模态框提交按钮
-          if (this.gongxu.gss==undefined){
+        motaiTijiao(leix){//模态框 登记提交按钮
+          if (!isNaN(this.gongxu.gss)){
 
           }
           if (this.gongxu.shr==undefined){
 
           }
           for (let i = 0; i < this.gridData.length; i++) {
-            console.log(this.gridData[i])
             if(this.gridData[i].realAmount==undefined){
               this.gridData[i].xuyao=0;
             }else {
               this.gridData[i].gss=this.gongxu.gss;
               this.gridData[i].shr=this.gongxu.shr;
+              this.gridData[i].iswancheng=leix;
             }
           }
-
-
-          this.$axios.post("ProcedureModule/Add", JSON.stringify(this.gridData),
+          var _this=this;
+          this.$axios.post("ProcedureModule/Add",JSON.stringify(this.gridData,) ,
             {
               headers: {"Content-Type": "application/json"}
             }).then(function (response) {
-            if (response.data == true) {
-              _this.$message({
-                message: '登记成功',
+            if (response.data == true){
+              _this.$notify({
+                title: '成功',
+                message: '工序操作成功,请去审核',
                 type: 'success'
               });
             } else {
-              _this.$message.error('登记错误');
+              _this.$notify({
+                title: '失败',
+                message: '操作失败',
+                type: 'danger'
+              });
             }
           }).catch();
-          this.table = false;
+          this.editwinshow=false;
+          this.visible=false;
+          this.table=false;
+          this.pageno=1;
+          this.getdata();
         },
-        Tijiao(type){
-          this.editwinshow = true;
+
+        openJiaojieChouti(row){//交接提交 输入合格数量
+          this.innerVisible=true;
+          this.gongxu=row
+        },
+
+        jiaojiesltj(){//交接提交
+          if (this.gongxu.amount<this.jiaojieSl){
+            return false;
+            this.$message.error("你确定合格数量大于实际数量?");
+          }
           var _this = this;
           var params = new URLSearchParams();
-          params.append("id",this.editform.id);
-          params.append("checker",this.editform.checker);
-          params.append("type",type);
-          this.$axios.post("Manufacture/UpdateByid", params).then(function (response) {
+          params.append("id",this.gongxu.id);
+          params.append("shuliang",this.jiaojieSl);
+          this.$axios.post("ProcedureModule/JiaojieAdd", params).then(function (response) {
             if (response.data == true){
               _this.$notify({
                 title: '成功',
@@ -360,14 +401,15 @@
             }
             _this.pageno = 1;
             _this.editwinshow=false;
+            _this.innerVisible=false;
             //刷新表格数据
             _this.getdata();
           }).catch();
-
         },
+
+
         handleClose(){
           this.table=false;
-
         },
       },
       created(){
