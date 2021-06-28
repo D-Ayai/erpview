@@ -102,16 +102,16 @@
         </el-form-item>
         <br>
         <el-form-item label=" 设计物料总成本:">
-          <span style="color: midnightblue" >{{editform.moduleCostPriceSum*editform.amount}}</span>
+          <span style="color: midnightblue" >{{editform.moduleCostPriceSum}}</span>
         </el-form-item>
         <el-form-item label="实际物料总成本:">
-          <span style="color: midnightblue">{{editform.realModuleCostPriceSum*editform.testedAmount}}</span>
+          <span style="color: midnightblue">{{editform.realModuleCostPriceSum}}</span>
         </el-form-item>
         <el-form-item label="设计工时总成本:">
-          <span style="color: midnightblue">{{editform.labourCostPriceSum*editform.amount}}</span>
+          <span style="color: midnightblue">{{editform.labourCostPriceSum}}</span>
         </el-form-item>
         <el-form-item label="实际工时总成本:" >
-          <span style="color: midnightblue">{{editform.realLabourCostPriceSum*editform.testedAmount}}</span>
+          <span style="color: midnightblue">{{editform.realLabourCostPriceSum}}</span>
         </el-form-item>
 
         <br>
@@ -293,10 +293,11 @@
               });
             }
             _this.pageno = 1;
+            _this.editwinshow=false;
             //刷新表格数据
             _this.getdata();
           }).catch();
-          this.editwinshow=false;
+
         },
         handleClose(){
           this.table=false;
