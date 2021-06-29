@@ -149,7 +149,7 @@
 
           <el-table-column prop="moduleSubtotal" label="设计物料成本" ></el-table-column>
 
-          <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
+          <el-table-column prop="realModuleSubtotal" label="实际物料成本"></el-table-column>
 
 
           <el-table-column  label="工序登记">
@@ -363,12 +363,13 @@
                 type: 'danger'
               });
             }
+            _this.editwinshow=false;
+            _this.visible=false;
+            _this.table=false;
+            _this.pageno=1;
+            _this.getdata();
           }).catch();
-          this.editwinshow=false;
-          this.visible=false;
-          this.table=false;
-          this.pageno=1;
-          this.getdata();
+
         },
 
         openJiaojieChouti(row){//交接提交 输入合格数量

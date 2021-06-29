@@ -151,7 +151,7 @@
 
           <el-table-column prop="moduleSubtotal" label="设计物料成本" ></el-table-column>
 
-          <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
+          <el-table-column prop="realModuleSubtotal" label="实际物料成本"></el-table-column>
 
 
           <el-table-column  label="工序登记">
