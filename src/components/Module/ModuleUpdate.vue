@@ -27,8 +27,7 @@
               type="primary"
               icon="el-icon-edit"
               size="mini"
-              @click="showCheckDialog(scope.row.id)"
-            >变更
+              @click="showCheckDialog(scope.row.id)">变更
             </el-button>
           </template>
         </el-table-column>
@@ -41,12 +40,11 @@
                      :page-sizes="[5, 10, 15, 20]"
                      :page-size="queryModule.pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="total"
-      ></el-pagination>
+                     :total="total"></el-pagination>
 
     <el-dialog title="变更物料组成设计单" :visible.sync="updateDialogVisible" width="90%" @close="updateDialogClosed">
       <el-row :gutter="20">
-        <el-col :span="16" :offset="18">
+        <el-col :span="14" :offset="14">
           <div>
               <span slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-check" type="primary" @click="addModuleDetails">提  交</el-button>
@@ -55,18 +53,36 @@
           </div>
         </el-col>
       </el-row>
+      <br>
       <el-form
         :model="module"
         ref="module"
-        label-width="100px"
-      >
-        <el-row :gutter="20">
+        label-width="100px">
+       <!-- <el-row :gutter="20">
+          <el-col :span="4">
+            <div><strong>设计单编号: </strong> {{addModuleForm.productId}}</div>
+          </el-col>
+          <el-col :span="4">
+            <div><strong>产品名称: </strong> {{addModuleForm.productName}}</div>
+          </el-col>
+          <el-col :span="3">
+            <div><strong>登记人: </strong> {{addModuleForm.register}}</div>
+          </el-col>
           <el-col :span="5">
+            <div><strong>建档时间: </strong> {{addModuleForm.registerTime}}</div>
+          </el-col>
+        </el-row>-->
+        <el-row :gutter="20" >
+          <el-col style=" position: relative;
+                          left: 25px;
+                          top: 2px" :span="5">
             <div><strong>设计单编号: </strong> {{module.designId}}</div>
           </el-col>
           <el-col :span="5">
-            <div>
-              <el-form-item label="设计人" prop="designer">
+            <div style=" position: relative;
+                          left: 25px;
+                          top: -10px;">
+              <el-form-item style="font-weight: bold" label="设计人:" prop="designer">
                 <el-input clearable v-model="module.designer"></el-input>
               </el-form-item>
             </div>
@@ -81,8 +97,9 @@
         <!-- 内容主体 -->
         <el-divider></el-divider>
         <div>
-          <label class="document-btn">已添加物料</label>
+          <label style="font-weight: bold" class="document-btn">已添加物料</label>
         </div>
+        <br>
         <!-- 产品物料组成 -->
         <el-table :data="moduleDetailsList" border stripe>
           <!-- stripe: 斑马条纹 border：边框-->
@@ -110,8 +127,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
-                @click="removeById(scope.row)"
-              >删除
+                @click="removeById(scope.row)">删除
               </el-button>
             </template>
           </el-table-column>
@@ -121,7 +137,7 @@
           <el-col :span="3">
             <label class="document-btn">新添加物料</label>
           </el-col>
-          <el-col :span="16" :offset="17">
+          <el-col :span="13" :offset="14">
             <div>
               <span slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-circle-plus-outline" type="primary"
@@ -131,6 +147,7 @@
             </div>
           </el-col>
         </el-row>
+        <br>
         <!-- 产品物料组成 -->
         <el-table :data="productList"
                   :row-class-name="tableRowClassName"
@@ -161,7 +178,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <br>
         <span><strong>物料总成本: </strong>  {{module.costPriceSum}}</span><br>
+        <br>
         <el-form-item label="设计要求" prop="moduleDescribe">
           <el-input v-model="module.moduleDescribe" clearable type="textarea" class="xxx"/>
         </el-form-item>

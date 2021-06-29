@@ -1,5 +1,6 @@
 <template>
   <div class="homeWrap">
+
     <el-container style="height:100%">
 
       <!--头部-->
@@ -7,7 +8,7 @@
           <!--头部导航-->
           <!--黑色背景设置   background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" -->
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" text-color="#333" active-text-color="#049b78" >
-            <el-menu-item >
+            <el-menu-item>
               <template>
                 <span>欢迎使用后端系统</span>
               </template>
@@ -31,9 +32,6 @@
                 </el-dropdown>
               </template>
             </el-menu-item>
-
-
-
           </el-menu>
 
       </el-header>
@@ -241,8 +239,6 @@
 <style scoped>
   .el-header, .el-footer {
     color: #333;
-    line-height: 60px;
-
   }
 
   .el-aside {

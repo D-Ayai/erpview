@@ -45,6 +45,10 @@
         <el-table-column
           prop="type"
           label="用途类型">
+          <template  slot-scope="scope">
+            <span v-if="scope.row.type==1">商品</span>
+            <span v-else-if="scope.row.type==2">材料</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="firstKindName"
@@ -270,9 +274,9 @@
           addform:{},
           checkTag:"1",
           deleteTag:"0",
-          firstKindName:"",
-          secondKindName:"",
-          thirdKindName:"",
+          firstKindId:"",
+          secondKindId:"",
+          thirdKindId:"",
           checkTime:"",
           registerTime:"",
           productName:""
@@ -288,9 +292,9 @@
           params.append("checkTag", this.checkTag);
           params.append("deleteTag",this.deleteTag);
 
-          params.append("firstKindName",this.firstKindName);
-          params.append("secondKindName",this.secondKindName);
-          params.append("thirdKindName",this.thirdKindName);
+          params.append("firstKindId",this.firstKindId);
+          params.append("secondKindId",this.secondKindId);
+          params.append("thirdKindId",this.thirdKindId);
           params.append("checkTime",this.checkTime)
           params.append("registerTime",this.registerTime)
           params.append("productName",this.productName)
@@ -479,9 +483,9 @@
           }).catch();
         },
         onSubmit() {
-          this.firstKindName = this.formInline.value2[0];
-          this.secondKindName = this.formInline.value2[1];
-          this.thirdKindName = this.formInline.value2[2];
+          this.firstKindId = this.formInline.value2[0];
+          this.secondKindId = this.formInline.value2[1];
+          this.thirdKindId = this.formInline.value2[2];
           if (this.formInline.value3[1]!= undefined) {
             this.checkTime = this.formInline.value3[1];
           }

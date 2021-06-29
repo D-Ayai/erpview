@@ -47,7 +47,10 @@
 
           this.$axios.post("User/login.action",params).then((response)=>{
             if(response.data==true){
-              _this.$router.push('/home')
+              _this.$router.push('/app')
+            }else{
+              alert("用户或密码错误！！")
+              _this.$router.push('/')
             }
           }).catch();
         },
@@ -78,7 +81,6 @@
     color: #475669;
     font-size: 18px;
     opacity: 0.75;
-    line-height: 150px;
     margin: 0;
   }
 
@@ -91,7 +93,6 @@
   }
   .el-main{
     top:30%;
-    line-height: 160px;
   }
   #biaoti{
     text-align: center;
