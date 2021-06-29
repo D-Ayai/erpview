@@ -271,7 +271,6 @@
         }).catch();
       },
       submitForm(formName) {
-        alert(this.fileForm)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('ss')
@@ -282,7 +281,6 @@
         });
       },
       resetForm(formName) {
-        alert(formName)
         this.$refs[formName].resetFields();
       },
       getNowTime () {

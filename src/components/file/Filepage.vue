@@ -32,6 +32,10 @@
       <el-table-column
         prop="type"
         label="用途类型">
+        <template  slot-scope="scope">
+          <span v-if="scope.row.type==1">商品</span>
+          <span v-else-if="scope.row.type==2">材料</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="firstKindName"
@@ -327,8 +331,7 @@
           this.getdata();
         },*/
         delcartype() {  //根据id删除
-
-          // alert("axios 进行删除")
+          
           /*if( confirm("确认删除吗")){
 
           }*/
@@ -371,7 +374,6 @@
         },
         btnsave(){   //编辑模态框  保存按钮按下
           this.editwinshow = false;
-          alert(this.checkTime)
           var _this =this;
           _this.editform.checkTag="1";
           _this.editform.checkTime=this.checkTime;

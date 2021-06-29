@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import Login from "../components/Login";
-import Welcome from "../components/Welcome";
-import DesignProcedureAdd from "../components/m/DesignProcedureAdd";
-import DesignProcedureShengHe from "../components/m/DesignProcedureShengHe";
-import DesignProcedureShow from "../components/m/DesignProcedureShow";
-import DesignProcedureUpdate from "../components/m/DesignProcedureUpdate";
+import app from '../App'
 
 import VueRouter from 'vue-router'
 
@@ -12,13 +8,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 //路由数组
-var routes=[
-  {path:"/Login",component:Login},
-  {path: "/Welcome",component: Welcome},
-  {path: "/m/DesignProcedureAdd",component: DesignProcedureAdd},
-  {path: "/m/DesignProcedureShengHe",component: DesignProcedureShengHe},
-  {path: "/m/DesignProcedureShow",component: DesignProcedureShow},
-  {path: "/m/DesignProcedureUpdate",component: DesignProcedureUpdate},
+var routes=[{path: "/",component: Login},
+  {path:"/app",component:app},
   ];
 
 

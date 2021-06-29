@@ -3,6 +3,20 @@
 
     <!--  条件查询-->
     <el-form :inline="true">
+      <el-form-item label="菜单">
+        <el-cascader  v-model="formInline.value2" :options="formInline.options"  :props="{checkStrictly: true }" clearable></el-cascader>
+      </el-form-item>
+      <el-form-item label="时间">
+        <el-date-picker
+          v-model="formInline.value3"
+          type="datetimerange"
+          align="right"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="['00:00:00', '24:00:00']"
+          value-format=" yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item label="产品名称">
         <el-input placeholder="请输入名称" clearable v-model="name"></el-input>
       </el-form-item>
@@ -68,7 +82,7 @@
     <!-- 添加设计单 -->
     <el-dialog title="物料组成设计单" :visible.sync="addDialogVisible" width="90%" @close="addDialogClosed">
       <el-row :gutter="20">
-        <el-col :span="16" :offset="12">
+        <el-col :span="16" :offset="11">
           <div>
               <span slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-circle-plus-outline" type="primary" @click="AddModuleDetailLists">添加物料</el-button>
@@ -79,6 +93,7 @@
           </div>
         </el-col>
       </el-row>
+      <br>
       <!-- 内容主体 -->
       <el-row :gutter="20">
         <el-col :span="4">
@@ -227,6 +242,12 @@
           type: 1,
           designModuleTag: 0
         },
+        formInline:{
+          value2: '',
+          value3: '',
+          options:[],
+          input:"",
+        },
         queryModule: {
           checkTag: 1,
           deleteTag: 0,
@@ -241,7 +262,15 @@
         moduleTotal: 0,
         multipleSelection: [],
         designModuleTag:"0",
-        type:""
+        type:"",
+        changeTime:"",
+        deleteTag:"0",
+        firstKindId:"",
+        secondKindId:"",
+        thirdKindId:"",
+        checkTime:"",
+        registerTime:"",
+        productName:""
       }
     },
     methods: {
@@ -250,6 +279,7 @@
           this.$message.error("请至少添加一个物料");
           return;
         }
+
         this.moduleList.forEach((item) => {
           item.goodsId = this.addModuleForm.productId;
           item.designer = this.addModuleForm.designer;
@@ -358,7 +388,12 @@
         params.append("productName", this.name);
         params.append("designModuleTag",this.designModuleTag)
         params.append("type",this.type);
-
+        params.append("firstKindId",this.firstKindId);
+        params.append("secondKindId",this.secondKindId);
+        params.append("thirdKindId",this.thirdKindId);
+        params.append("checkTime",this.checkTime)
+        params.append("registerTime",this.registerTime)
+        /*params.append("productName",this.productName)*/
         this.$axios.post("file/page.action", params).then(function (response) {
           _this.tableData = response.data.records;
           _this.total = response.data.total;
@@ -377,10 +412,32 @@
         this.getFileList();
       },
       ck(val) {  //页码变更
+        this.firstKindId = this.formInline.value2[0];
+        this.secondKindId = this.formInline.value2[1];
+        this.thirdKindId = this.formInline.value2[2];
+        if (this.formInline.value3[1]!= undefined) {
+          this.checkTime = this.formInline.value3[1];
+        }
+        if (this.formInline.value3[0]!= undefined) {
+          this.registerTime = this.formInline.value3[0];
+        }
+        this.productName=this.formInline.input;
         this.getFileList();
+      },
+      gette(){
+        this.$axios.get("Config/queryAll").then((response)=>{
+          this.ops=response.data;
+        }).catch();
+      },
+      getDa(){
+        this.$axios.get("Config/queryAll").then((response)=>{
+          this.formInline.options=response.data;
+        }).catch();
       },
     },
     created() {
+      this.gette();
+      this.getDa();
       this.getFileList()
     },
     filters: {   //过滤器
