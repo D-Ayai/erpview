@@ -14,12 +14,12 @@
               </template>
             </el-menu-item>
             <!-- 头部的导航菜单-->
-            <el-submenu :index="toumenu.id+''" v-for="toumenu in menutable">
+            <el-menu-item :index="toumenu.id+''" v-for="toumenu in menutable">
               <template slot="title">
                 <i :class="toumenu.linkUrl"></i>
                 <span>{{toumenu.name}}</span>
               </template>
-            </el-submenu>
+            </el-menu-item>
 
             <el-menu-item style="margin-left: 50%" >
               <template slot="title">

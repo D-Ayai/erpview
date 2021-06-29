@@ -44,7 +44,6 @@
       <el-table-column prop="productName" label="产品名称"></el-table-column>
       <el-table-column prop="amount" label="投产数量"></el-table-column>
       <el-table-column prop="testedAmount" label="合格数量"></el-table-column>
-      <el-table-column prop="" label="派工单状态"></el-table-column>
       <el-table-column label="审核状态">
         <template slot-scope="scope">
           <span v-if="scope.row.checkTag==0" style="color:orange">待审核</span>
@@ -122,7 +121,7 @@
 
           <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
 
-          <el-table-column prop="procedureFinishTag" label="工序状态" ></el-table-column>
+          <el-table-column prop="labourHourAmount" label="工时数" ></el-table-column>
 
           <el-table-column prop="subtotal" label="设计工时成本(元)" ></el-table-column>
 
@@ -130,7 +129,7 @@
 
           <el-table-column prop="moduleSubtotal" label="设计物料成本(元)" ></el-table-column>
 
-          <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
+          <el-table-column prop="realModuleSubtotal" label="实际物料成本"></el-table-column>
 
 
           <el-table-column  label="操作" width="130">
@@ -163,17 +162,17 @@
       custom-class="demo-drawer"
       size="50%">
       <el-table style="margin:auto;width: 911px"  border :data="gridData">
-        <el-table-column property="detailsNumber"   label="物料序号" width="150"></el-table-column>
-        <el-table-column property="productName" label="物料名称" width="150"></el-table-column>
-        <el-table-column property="type" label="用途" width="150">
+        <el-table-column property="detailsNumber"   label="物料序号" ></el-table-column>
+        <el-table-column property="productName" label="物料名称"></el-table-column>
+        <el-table-column property="type" label="用途">
           <template slot-scope="scope">
             <span v-if="scope.row.type==1">商品</span>
             <span v-else="">物料</span>
           </template>
         </el-table-column>
-        <el-table-column property="amount" label="本工序数量" width="150"></el-table-column>
-        <el-table-column property="costPrice" label="单价" width="150"></el-table-column>
-        <el-table-column property="subtotal" label="小计" width="150"></el-table-column>
+        <el-table-column property="amount" label="本工序数量" ></el-table-column>
+        <el-table-column property="costPrice" label="单价" ></el-table-column>
+        <el-table-column property="subtotal" label="小计" ></el-table-column>
       </el-table>
     </el-drawer>
 

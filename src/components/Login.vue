@@ -47,11 +47,17 @@
 
           this.$axios.post("User/login.action",params).then((response)=>{
             if(response.data==true){
+              _this.$message({
+                message: '登入成功',
+                type: 'success'
+              });
+
               _this.$router.push('/app')
             }else{
-              alert("用户或密码错误！！")
+              _this.$message.error("用户或密码错误！！");
               _this.$router.push('/')
             }
+            _this.from={};
           }).catch();
         },
         submitForm(formName) {

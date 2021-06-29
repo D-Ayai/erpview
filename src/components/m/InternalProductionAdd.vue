@@ -403,6 +403,7 @@
             _this.pageno = 1;
             _this.editwinshow=false;
             _this.innerVisible=false;
+            _this.jiaojieSl="";
             //刷新表格数据
             _this.getdata();
           }).catch();

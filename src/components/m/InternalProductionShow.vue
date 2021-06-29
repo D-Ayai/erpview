@@ -44,15 +44,14 @@
       <el-table-column prop="productName" label="产品名称"></el-table-column>
       <el-table-column prop="amount" label="投产数量"></el-table-column>
       <el-table-column prop="testedAmount" label="合格数量"></el-table-column>
-      <el-table-column prop="" label="派工单状态"></el-table-column>
-      <el-table-column label="审核状态">
+      <el-table-column label="登记审核状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.checkTag==0" style="color:orange">待审核</span>
-          <span v-else-if="scope.row.checkTag==1" style="color:green">已审核</span>
-          <span v-else="" style="color:red">未设计</span>
+          <span v-if="scope.row.checkTag==0" style="color:orange">等待审核</span>
+          <span v-else-if="scope.row.checkTag==1" style="color:green">审核通过</span>
+          <span v-else="" style="color:red">审核未通过</span>
         </template>
       </el-table-column>
-      <el-table-column prop="manufactureProcedureTag" label="生产状态">
+      <el-table-column label="交接审核状态">
         <template slot-scope="scope">
           <span v-if="scope.row.manufactureProcedureTag==0" style="color:red">待登记</span>
           <span v-else-if="scope.row.manufactureProcedureTag==1" style="color:orange">未审核</span>
@@ -61,7 +60,7 @@
       </el-table-column>
       <el-table-column  label="审核">
         <template slot-scope="scope">
-          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row)" plain>详细</el-button>
+          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row.id)" plain>详细</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -117,7 +116,11 @@
         <!--表格-->
         <el-table  ref="multipleSelection" :data="editform.procedureList" stripe  border style="width: 100%">
 
-          <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
+          <el-table-column prop="procedureName"  label="工序名称" >
+            <template slot-scope="scope">
+              <el-button @click="openChouti(scope.row)" type="text">{{scope.row.procedureName}}</el-button>
+            </template>
+          </el-table-column>
 
           <el-table-column prop="labourHourAmount" label="设计工时数" ></el-table-column>
 
@@ -129,21 +132,25 @@
 
           <el-table-column prop="moduleSubtotal" label="设计物料成本" ></el-table-column>
 
-          <el-table-column prop="procedureTransferTag" label="实际物料成本"></el-table-column>
+          <el-table-column prop="realModuleSubtotal" label="实际物料成本"></el-table-column>
 
 
           <el-table-column  label="工序登记">
             <template slot-scope="scope">
-              <span v-if="scope.row.procedureFinishTag==0"  style="color: orange" >待登记</span>
-              <el-button v-else-if="scope.row.procedureFinishTag==1||scope.row.procedureFinishTag==2" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>审核</el-button>
-              <span v-else=""  style="color: green" >已完成</span>
+              <span v-if="scope.row.procedureFinishTag==0" style="color:red">待登记</span>
+              <span v-else-if="scope.row.procedureFinishTag==1" style="color:orange">登记完成待审核</span>
+              <span v-else-if="scope.row.procedureFinishTag==2" style="color:orange">未完成登记待审核</span>
+              <span v-else="" style="color:green">已审核</span>
             </template>
           </el-table-column>
           <el-table-column  label="工序交接">
-            <template v-if="scope.row.procedureFinishTag==4" slot-scope="scope">
-              <el-button v-if="scope.row.procedureTransferTag==0" type="success"  icon="el-icon-edit"  size="medium" @click="openChouti(scope.row)" plain round>交接</el-button>
-              <span v-else-if="scope.row.procedureTransferTag==1"  @click="openeSheJiwin(scope.row)"   style="color: orange" >待审核</span>
-              <span v-else="">交接完成</span>
+            <template v-if="scope.row.procedureFinishTag==3" slot-scope="scope">
+              <span v-if="scope.row.procedureTransferTag==0"  style="color:red">待交接</span>
+              <span v-else-if="scope.row.procedureTransferTag==1"    style="color: orange" >待审核</span>
+              <span v-else="" style="color:green">交接完成</span>
+            </template>
+            <template v-else="" slot-scope="scope">
+              <span style="color:orange">待登记及审核</span>
             </template>
           </el-table-column>
         </el-table>
@@ -158,7 +165,6 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">取 消</el-button>
-        <el-button  type="primary" icon="el-icon-s-promotion" @click="motaiTijiao" round>提交</el-button>
       </div>
 
     </el-dialog>
@@ -172,21 +178,11 @@
         <el-form-item label="工序名称:" style="width: 20%">
           <span style="color: midnightblue">{{gongxu.procedureName}}</span>
         </el-form-item>
-        <el-form-item label="负责人:" style="width: 30%" >
-          <el-input clearable placeholder='请手动输入负责人' v-model="gongxu.shr"></el-input>
-        </el-form-item>
-        <el-form-item style="width: 20%">
-          <el-button type="danger"  icon="el-icon-delete" @click="table = false" round>取 消</el-button>
-        </el-form-item>
-        <br>
         <el-form-item label="设计工时数:" style="width: 20%" >
           <span style="color: midnightblue">{{gongxu.labourHourAmount}}</span>
         </el-form-item>
         <el-form-item label="实际工时数:" style="width: 30%" >
-          <el-input clearable placeholder='请手动输入设计人' v-model="gongxu.gss"></el-input>
-        </el-form-item>
-        <el-form-item style="width:20%">
-          <el-button  type="primary" icon="el-icon-s-promotion" @click="motaiTijiao" round>确定</el-button>
+          <span  style="color: midnightblue">{{gongxu.realLabourHourAmount}}</span>
         </el-form-item>
 
 
@@ -196,12 +192,6 @@
           <el-table-column property="productId" label="物料编号"></el-table-column>
           <el-table-column property="amount" label="设计数量"></el-table-column>
           <el-table-column property="realAmount" label="补充数量"></el-table-column>
-          <el-table-column property="realAmount" label="已使用数量"></el-table-column>
-          <el-table-column label="本次数量">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sl"></el-input>
-            </template>
-          </el-table-column>
         </el-table>
       </el-form>
     </el-drawer>

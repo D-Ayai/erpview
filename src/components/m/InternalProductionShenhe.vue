@@ -193,7 +193,8 @@
           <span style="color: midnightblue">{{gongxu.procedureName}}</span>
         </el-form-item>
         <el-form-item label="设计工时数:" style="width: 20%" >
-          <span style="color: midnightblue">{{gongxu.labourHourAmount}}</span>
+          <span style="color: midnightblue">设计:{{gongxu.labourHourAmount}}</span>
+          <span style="color: midnightblue">实际:{{gongxu.realLabourHourAmount}}</span>
         </el-form-item>
         <el-form-item label="实际工时数:" style="width: 30%" >
           <span  v-model="gongxu.gss"></span>

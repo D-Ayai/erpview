@@ -44,7 +44,6 @@
       <el-table-column prop="productName" label="产品名称"></el-table-column>
       <el-table-column prop="amount" label="投产数量"></el-table-column>
       <el-table-column prop="testedAmount" label="合格数量"></el-table-column>
-      <el-table-column prop="" label="派工单状态"></el-table-column>
       <el-table-column label="审核状态">
         <template slot-scope="scope">
           <span v-if="scope.row.checkTag==0" style="color:orange">待审核</span>
@@ -122,7 +121,7 @@
 
           <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
 
-          <el-table-column prop="procedureFinishTag" label="工序状态" ></el-table-column>
+          <el-table-column prop="labourHourAmount" label="工时数" ></el-table-column>
 
           <el-table-column prop="subtotal" label="设计工时成本(元)" ></el-table-column>
 
