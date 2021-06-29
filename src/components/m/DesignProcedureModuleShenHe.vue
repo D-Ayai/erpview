@@ -3,9 +3,9 @@
       <!-- 显示头 -->
       <h4>
         <el-steps :active="2" simple>
-          <el-step title="生产管理" icon="el-icon-edit"></el-step>
-          <el-step title="工序物料设计" icon="el-icon-upload"></el-step>
-          <el-step title="工序物料设计单审核" icon="el-icon-picture"></el-step>
+          <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+          <el-step title="产品生产工序设计" icon="el-icon-shopping-bag-1"></el-step>
+          <el-step title="工序物料设计单审核" icon="el-icon-magic-stick"></el-step>
         </el-steps>
       </h4>
 
@@ -55,28 +55,24 @@
         </el-table-column>
         <el-table-column
           prop="productName"
-          label="产品名称"
-          width="120">
+          label="产品名称">
         </el-table-column>
         <el-table-column
           prop="designer"
-          label="设计人"
-          width="120">
+          label="设计人">
         </el-table-column>
         <el-table-column
           prop="registerTime"
           label="登记时间"
-          width="220">
+          width="200">
         </el-table-column>
         <el-table-column
           prop="costPriceSum"
-          label="工时总成本"
-          width="120">
+          label="工时总成本">
         </el-table-column>
         <el-table-column
           prop="moduleCostPriceSum"
-          label="物料总成本"
-          width="120">
+          label="物料总成本">
         </el-table-column>
         <el-table-column  label="审核">
           <template slot-scope="scope">
@@ -124,17 +120,17 @@
           <!--表格-->
           <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
 
-            <el-table-column  prop="detailsNumber" label="工序序号"  width="100"></el-table-column>
+            <el-table-column  prop="detailsNumber" label="工序序号"  ></el-table-column>
 
-            <el-table-column prop="procedureName"  label="工序名称"  width="120"></el-table-column>
+            <el-table-column prop="procedureName"  label="工序名称"  ></el-table-column>
 
-            <el-table-column prop="labourHourAmount" label="工时数" width="130"></el-table-column>
+            <el-table-column prop="labourHourAmount" label="工时数" ></el-table-column>
 
-            <el-table-column prop="amountUnit" label="单位" width="120"></el-table-column>
+            <el-table-column prop="amountUnit" label="单位" ></el-table-column>
 
-            <el-table-column prop="costPrice" label="单位工时成本" width="120"></el-table-column>
+            <el-table-column prop="costPrice" label="单位工时成本" ></el-table-column>
 
-            <el-table-column prop="subtotal" label="小计" width="130"></el-table-column>
+            <el-table-column prop="subtotal" label="小计" ></el-table-column>
 
             <el-table-column  label="操作" width="130">
               <template slot-scope="scope">
@@ -169,16 +165,16 @@
         size="50%">
         <el-table style="margin:auto;width: 911px"  border :data="gridData">
           <el-table-column property="detailsNumber"   label="物料序号" width="150"></el-table-column>
-          <el-table-column property="productName" label="物料名称" width="150"></el-table-column>
-          <el-table-column property="type" label="用途" width="150">
+          <el-table-column property="productName" label="物料名称"></el-table-column>
+          <el-table-column property="type" label="用途" >
             <template slot-scope="scope">
               <span v-if="scope.row.type==1">商品</span>
               <span v-else="">物料</span>
             </template>
           </el-table-column>
-          <el-table-column property="amount" label="本工序数量" width="150"></el-table-column>
-          <el-table-column property="costPrice" label="单价" width="150"></el-table-column>
-          <el-table-column property="subtotal" label="小计" width="150"></el-table-column>
+          <el-table-column property="amount" label="本工序数量" ></el-table-column>
+          <el-table-column property="costPrice" label="单价" ></el-table-column>
+          <el-table-column property="subtotal" label="小计" ></el-table-column>
         </el-table>
       </el-drawer>
     </div>
@@ -249,7 +245,6 @@
           },
 
           openeditwin(id) {  //打开编辑页面
-            console.log(id);
             this.editwinshow = true;
             var _this = this;
             var params = new URLSearchParams();

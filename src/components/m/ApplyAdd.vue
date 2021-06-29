@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h5>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="生产计划管理" icon="el-icon-upload"></el-step>
-        <el-step title="新发生生产计划登记" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="生产计划管理" icon="el-icon-set-up"></el-step>
+        <el-step title="新发生生产计划登记" icon="el-icon-notebook-2"></el-step>
       </el-steps>
     </h5>
 
@@ -62,11 +62,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="amountUnit" label="单位"></el-table-column>
-      <el-table-column prop="costPrice" label="单价(元)">
-      </el-table-column>
-        <el-table-column prop="amountUnit" label="小计(元)">
+      <el-table-column prop="costPrice" label="单价(元)"></el-table-column>
+        <el-table-column label="小计" >
           <template slot-scope="scope">
-            <span>{{scope.row.amount*scope.row.costPrice}}</span>
+            <span  v-if="isNaN(scope.row.amount*scope.row.costPrice)">0</span>
+            <span  v-else="">{{scope.row.amount*scope.row.costPrice}}</span>
           </template>
         </el-table-column>
       </el-table>

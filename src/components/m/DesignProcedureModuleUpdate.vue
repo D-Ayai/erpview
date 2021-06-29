@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="工序物料设计" icon="el-icon-upload"></el-step>
-        <el-step title="工序物料设计单变更" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="产品生产工序设计" icon="el-icon-shopping-bag-1"></el-step>
+        <el-step title="工序物料设计单变更" icon="el-icon-edit-outline"></el-step>
       </el-steps>
     </h4>
 
@@ -55,23 +55,24 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        label="产品名称"
-        width="140">
+        label="产品名称">
       </el-table-column>
       <el-table-column
         prop="designer"
-        label="设计人"
-        width="140">
+        label="设计人">
       </el-table-column>
       <el-table-column
         prop="registerTime"
         label="登记时间"
-        width="240">
+        width="200">
+      </el-table-column>
+      <el-table-column
+        prop="costPriceSum"
+        label="工时总成本">
       </el-table-column>
       <el-table-column
         prop="moduleCostPriceSum"
-        label="物料总成本"
-        width="140">
+        label="物料总成本">
       </el-table-column>
       <el-table-column  label="变更">
         <template slot-scope="scope">
@@ -119,19 +120,19 @@
         <!--表格-->
         <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
 
-          <el-table-column  prop="detailsNumber" label="工序序号"  width="100"></el-table-column>
+          <el-table-column  prop="detailsNumber" label="工序序号" ></el-table-column>
 
-          <el-table-column prop="procedureName"  label="工序名称"  width="120"></el-table-column>
+          <el-table-column prop="procedureName"  label="工序名称"></el-table-column>
 
-          <el-table-column prop="labourHourAmount" label="工时数" width="130"></el-table-column>
+          <el-table-column prop="labourHourAmount" label="工时数"></el-table-column>
 
-          <el-table-column prop="amountUnit" label="单位" width="120"></el-table-column>
+          <el-table-column prop="amountUnit" label="单位"></el-table-column>
 
-          <el-table-column prop="costPrice" label="单位工时成本" width="120"></el-table-column>
+          <el-table-column prop="costPrice" label="单位工时成本"></el-table-column>
 
-          <el-table-column prop="subtotal" label="小计" width="130"></el-table-column>
+          <el-table-column prop="subtotal" label="小计"></el-table-column>
 
-          <el-table-column  label="操作" width="130">
+          <el-table-column  label="操作">
             <template slot-scope="scope">
               <el-button v-if="scope.row.designModuleChangeTag==0" type="success"  icon="el-icon-edit" @click="openeSheJiwin(scope.row)" plain>更改设计</el-button>
               <el-button v-else="" type="warning"  icon="el-icon-edit-outline" @click="openeChongXinwin(scope.row)" plain>重新设计</el-button>
@@ -142,7 +143,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">取 消</el-button>
-        <el-button type="success"   icon="el-icon-check"   @click="btnsave(editform.id)">提交</el-button>
+        <el-button v-if="isupdate" type="success"   icon="el-icon-check"   @click="btnsave(editform.id)">提交</el-button>
       </div>
 
     </el-dialog>
@@ -156,26 +157,26 @@
       custom-class="demo-drawer"
       size="50%">
       <el-table style="margin:auto;width: 911px"  border :data="gridData">
-        <el-table-column property="detailsNumber"   label="物料序号" width="130"></el-table-column>
-        <el-table-column property="productName" label="物料名称" width="130"></el-table-column>
-        <el-table-column property="type" label="用途" width="130">
+        <el-table-column property="detailsNumber"   label="物料序号"></el-table-column>
+        <el-table-column property="productName" label="物料名称" ></el-table-column>
+        <el-table-column property="type" label="用途" >
           <template slot-scope="scope">
             <span v-if="scope.row.type==1">商品</span>
             <span v-else="">物料</span>
           </template>
         </el-table-column>
-        <el-table-column label="可用数量" width="130">
+        <el-table-column label="可用数量" >
           <template slot-scope="scope">
             {{scope.row | Keyong}}
           </template>
         </el-table-column>
-        <el-table-column property="costPrice" label="单价" width="130"></el-table-column>
+        <el-table-column property="costPrice" label="单价" ></el-table-column>
         <el-table-column label="小计" width="130">
           <template slot-scope="scope">
             {{scope.row | XiaoJI}}
           </template>
         </el-table-column>
-        <el-table-column  label="需要数量" width="130">
+        <el-table-column  label="需要数量" >
             <template slot-scope="scope">
               <el-input v-model="scope.row.amount"></el-input>
             </template>
@@ -213,6 +214,7 @@
           shuju:[],
           GongXusetid:[],
           dakaiid: {},//打开抽屉id编号
+          isupdate:false,
         };
       },
       methods: {
@@ -291,6 +293,7 @@
               this.gridData[i].amount=0;
             }
           }
+          this.isupdate=true;
           this.table = false;
           var _this =this;
           this.$axios.post("DesignProcedureModule/update", JSON.stringify(this.gridData),
@@ -348,6 +351,7 @@
                 type: 'danger'
               });
             }
+            _this.isupdate=false;
             _this.pageno = 1;
             //刷新表格数据
             _this.getdata();

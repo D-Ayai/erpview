@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="产品生产工序设计" icon="el-icon-upload"></el-step>
-        <el-step title="制定产品生产工序设计单" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="产品生产工序设计" icon="el-icon-sell"></el-step>
+        <el-step title="制定产品生产工序设计单" icon="el-icon-search"></el-step>
       </el-steps>
     </h4>
 
@@ -55,18 +55,16 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        label="产品名称"
-        width="140">
+        label="产品名称">
       </el-table-column>
       <el-table-column
         prop="registerTime"
         label="登记时间"
-        width="240">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="costPriceSum"
-        label="工时总成本"
-        width="140">
+        label="工时总成本">
       </el-table-column>
       <el-table-column label="审核状态" width="140">
         <template  slot-scope="scope">
@@ -96,7 +94,7 @@
     </el-pagination>
 
     <!-- 查询模态框 -->
-    <el-dialog  title="详细" width="60%"  :visible="editwinshow">
+    <el-dialog  title="详细" width="60%"  :visible.sync="editwinshow">
 
       <el-form :inline="true"  :modal="editform">
 
@@ -129,17 +127,17 @@
         <!--表格-->
         <el-table  ref="multipleSelection" :data="editform.detailsList" stripe  border style="width: 100%">
 
-          <el-table-column  prop="detailsNumber" label="工序序号"  width="120"></el-table-column>
+          <el-table-column  prop="detailsNumber" label="工序序号"  ></el-table-column>
 
-          <el-table-column prop="procedureName"  label="工序名称"  width="140"></el-table-column>
+          <el-table-column prop="procedureName"  label="工序名称" ></el-table-column>
 
-          <el-table-column prop="labourHourAmount" label="工时数" width="150"></el-table-column>
+          <el-table-column prop="labourHourAmount" label="工时数" ></el-table-column>
 
-          <el-table-column prop="amountUnit" label="单位" width="140"></el-table-column>
+          <el-table-column prop="amountUnit" label="单位"></el-table-column>
 
-          <el-table-column prop="costPrice" label="单位工时成本" width="150"></el-table-column>
+          <el-table-column prop="costPrice" label="单位工时成本" ></el-table-column>
 
-          <el-table-column prop="subtotal" label="小计" width="150"></el-table-column>
+          <el-table-column prop="subtotal" label="小计" ></el-table-column>
         </el-table>
       </el-form>
 

@@ -3,9 +3,9 @@
     <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="生产计划管理" icon="el-icon-upload"></el-step>
-        <el-step title="生产计划查询" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="生产计划管理" icon="el-icon-set-up"></el-step>
+        <el-step title="生产计划查询" icon="el-icon-magic-stick"></el-step>
       </el-steps>
     </h4>
 
@@ -184,7 +184,7 @@
             params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
           }
           // 请求地址
-          this.$axios.post("Apply/GroupApplyIdUpdateAll", params).then(function (response) {
+          this.$axios.post("Apply/GroupApplyIdShenheAll", params).then(function (response) {
             _this.tableData = response.data.records;
             _this.total = response.data.total;
           }).catch();

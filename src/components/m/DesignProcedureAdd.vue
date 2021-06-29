@@ -3,9 +3,9 @@
    <!-- 显示头 -->
     <h4>
       <el-steps :active="2" simple>
-        <el-step title="生产管理" icon="el-icon-edit"></el-step>
-        <el-step title="产品生产工序设计" icon="el-icon-upload"></el-step>
-        <el-step title="制定产品生产工序设计单" icon="el-icon-picture"></el-step>
+        <el-step title="生产管理" icon="el-icon-s-unfold"></el-step>
+        <el-step title="产品生产工序设计" icon="el-icon-sell"></el-step>
+        <el-step title="制定产品生产工序设计单" icon="el-icon-notebook-2"></el-step>
       </el-steps>
     </h4>
     <!-- 查询条件 -->
@@ -50,33 +50,27 @@
       </el-table-column>
       <el-table-column
         prop="productName"
-        label="产品名称"
-        width="140">
+        label="产品名称">
       </el-table-column>
       <el-table-column
         prop="productClass"
-        label="档次"
-        width="140">
+        label="档次">
       </el-table-column>
       <el-table-column
         prop="firstKindName"
-        label="I级类名"
-        width="140">
+        label="I级类名">
       </el-table-column>
       <el-table-column
         prop="secondKindName"
-        label="II级类名"
-        width="140">
+        label="II级类名">
       </el-table-column>
       <el-table-column
         prop="thirdKindName"
-        label="III级类名"
-        width="140">
+        label="III级类名">
       </el-table-column>
       <el-table-column
         prop="responsiblePerson"
-        label="产品经理"
-        width="140">
+        label="产品经理">
       </el-table-column>
       <el-table-column  label="操作">
         <template slot-scope="scope">
@@ -101,19 +95,19 @@
 
 
       <el-form :inline="true"  :modal="editform">
-        <el-form-item label="产品编号:" >
+        <el-form-item label="产品编号:" style="width: 35%">
           <span style="color: midnightblue">{{editform.productId}}</span>
         </el-form-item>
 
-        <el-form-item label="产品名称:">
+        <el-form-item label="产品名称:" style="width: 35%">
           <span style="color: midnightblue;width: 200px">{{editform.productName}}</span>
         </el-form-item>
         <br>
-        <el-form-item label="登记人:" >
+        <el-form-item label="登记人:" style="width: 35%">
           <span style="color: midnightblue">{{editform.register}}</span>
         </el-form-item>
 
-        <el-form-item label="登记时间:">
+        <el-form-item label="登记时间:" style="width: 35%">
           <span style="color: midnightblue;width: 200px">{{editform.registerTime}}</span>
         </el-form-item>
 
@@ -152,27 +146,28 @@
             width="100">
           </el-table-column>
 
-          <el-table-column label="工时数" width="150">
+          <el-table-column label="工时数" >
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.labourHourAmount"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="单位" width="140">
+          <el-table-column label="单位" >
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.amountUnit"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="单位工时成本" width="150">
+          <el-table-column label="单位工时成本" >
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.costPrice"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="小计" width="150">
+          <el-table-column label="小计" >
             <template slot-scope="scope">
-              <el-input clearable v-model="scope.row|| XiaoJi"></el-input>
+              <span  v-if="isNaN(scope.row.labourHourAmount*scope.row.costPrice)">0</span>
+              <span  v-else="">{{scope.row.labourHourAmount*scope.row.costPrice}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -181,7 +176,6 @@
           <el-input style="width: 400px" type="textarea" :rows="2" placeholder="请输入内容" v-model="editform.procedureDescribe"></el-input>
         </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false,manufa=[]">取 消</el-button>
         <el-button type="primary" @click="btnsave">确 定</el-button>
@@ -369,6 +363,7 @@
                     type: 'danger'
                   });
                 }
+                _this.manufa=[];
             _this.pageno = 1;
             //刷新表格数据
             _this.getdata();
@@ -377,16 +372,6 @@
       },
       filters: {   //过滤器
         XiaoJi(val){
-          var a=0;
-          if(val.labourHourAmount!=undefined){
-            a=val.labourHourAmount;
-          }
-          var b=0;
-          if(val.costPrice!=undefined){
-            a=val.costPrice;
-          }
-          val.subtotal=a*b;
-          return val.subtotal;
         },
       },
       created(){
